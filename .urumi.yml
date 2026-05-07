@@ -3,3 +3,7 @@ config_version: 1
 folder_mappings:
   - source: themes
     target: wp-content/themes
+  - source: mu-plugins
+    target: wp-content/mu-plugins
+  - source: plugins
+    target: wp-content/plugins
