@@ -1,7 +1,12 @@
 node_modules/
-dist/
 .DS_Store
 .env
 .env.local
 *.log
 .vite/
+
+# dist/ is intentionally tracked: the platform's git-deploy pipeline
+# does not run npm build, so we ship the built React bundle in-repo.
+# See docs/2026-05-07-urumi-yml-headless-themes-plan.md in wc-hosting-portal
+# for the long-term fix (post_data_pull_script in .urumi.yml).
+# When that lands, restore `dist/` to this file and remove from git.
