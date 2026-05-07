@@ -44,6 +44,11 @@
 
     <link rel="canonical" href="<?php echo esc_url($seo_data['canonical_url']); ?>">
 
+    <!-- Brand fonts: EB Garamond (display) + Inter (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap">
+
     <style id="ssr-styles">
         #ssr-content {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

@@ -1,33 +1,36 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #fff;
-  color: #1a1a2e;
-  line-height: 1.6;
-}
+/**
+ * SYNC: This file mirrors its counterpart in the sibling theme repo
+ * (UrumiAI/base-headless ↔ UrumiAI/demo-store) at the same relative path.
+ * Port improvements both ways — but the visual values are intentionally
+ * different (this is the cosmetic Salve theme; base-headless stays neutral).
+ */
 
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--color-bg-primary);
 }
 
 .main-content {
   flex: 1;
   width: 100%;
-  max-width: 1280px;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: var(--space-7) var(--container-padding);
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    padding: var(--space-5) var(--container-padding);
+  }
 }
 
 .page-loading {
-  min-height: 60vh;
+  min-height: 50vh;
 }
+
+/* ---------- Generic states (used across pages) ---------- */
 
 .loading-state,
 .error-state,
@@ -36,16 +39,17 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 50vh;
-  gap: 1rem;
-  color: #475569;
+  min-height: 40vh;
+  gap: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--type-body-size);
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e5e7eb;
-  border-top-color: #2F2A8C;
+  width: 32px;
+  height: 32px;
+  border: var(--border-width) solid var(--color-border-subtle);
+  border-top-color: var(--color-text-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -54,36 +58,90 @@ body {
   to { transform: rotate(360deg); }
 }
 
-.collection-title {
-  text-align: center;
-  padding: 2rem 0 1.5rem;
+.error-banner {
+  background: var(--color-bg-subtle);
+  border-left: 2px solid var(--color-error);
+  color: var(--color-error);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--type-body-sm-size);
+  margin-bottom: var(--space-5);
 }
 
-.collection-title h2 {
-  font-size: 1.5rem;
+/* ---------- Section headers (used by Home / Shop) ---------- */
+
+.collection-title {
+  text-align: center;
+  padding: var(--space-7) 0 var(--space-5);
+}
+
+.collection-title .eyebrow {
+  font-size: var(--type-eyebrow-size);
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--track-widest);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+  display: block;
+}
+
+.collection-title h1 {
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-lh);
+  letter-spacing: var(--track-tight);
 }
 
 .title-divider {
-  width: 48px;
+  width: 32px;
   height: 1px;
-  background: #cbd5e1;
-  margin: 0.75rem auto 0;
+  background: var(--color-border-strong);
+  margin: var(--space-5) auto 0;
 }
 
-.product-list-container {
-  width: 100%;
+/* ---------- Buttons (shared across pages) ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: var(--type-label-size);
+  font-weight: 600;
+  letter-spacing: var(--track-wider);
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border-radius: var(--radius-none);
+  border: var(--border-width) solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration-base) var(--ease-standard),
+              color var(--duration-base) var(--ease-standard);
+  min-width: 160px;
 }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem 0;
+.btn-primary {
+  background: var(--color-text-primary);
+  color: var(--color-text-inverse);
 }
 
-@media (max-width: 640px) {
-  .main-content { padding: 1rem; }
-  .product-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+.btn-primary:hover { background: rgba(26, 22, 18, 0.85); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+
+.btn-secondary:hover {
+  background: var(--color-text-primary);
+  color: var(--color-text-inverse);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding: 0;
+  min-width: 0;
 }

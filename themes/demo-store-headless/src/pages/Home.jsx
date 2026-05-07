@@ -10,16 +10,17 @@ import { Link } from 'react-router-dom';
 import ProductList from '../components/ProductList';
 
 function Home() {
-  const siteName = window.wpData?.siteName || 'Demo Store';
+  const siteName = window.wpData?.siteName || 'Salve';
   return (
     <>
       <section className="collection-title">
-        <h2>{siteName}</h2>
+        <span className="eyebrow">Considered cosmetics</span>
+        <h1>{siteName}</h1>
         <div className="title-divider" />
       </section>
       <ProductList perPage={8} />
-      <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-        <Link to="/shop">View all products →</Link>
+      <div style={{ textAlign: 'center', padding: 'var(--space-7) 0 var(--space-3)' }}>
+        <Link to="/shop" className="btn btn-secondary">View all products</Link>
       </div>
     </>
   );

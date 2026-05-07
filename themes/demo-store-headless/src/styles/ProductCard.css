@@ -1,22 +1,19 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  overflow: hidden;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: opacity var(--duration-base) var(--ease-standard);
 }
 
 .product-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
+  opacity: 0.85;
 }
 
 .product-image-wrapper {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  background: var(--background-subtle);
+  aspect-ratio: 4 / 5;
+  background: var(--color-bg-subtle);
   overflow: hidden;
 }
 
@@ -24,28 +21,50 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-standard);
+}
+
+.product-card:hover .product-image-wrapper img {
+  transform: scale(1.03);
 }
 
 .product-info {
-  padding: 0.875rem 1rem 1rem;
+  padding: var(--space-4) 0 var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-1);
 }
 
 .product-name {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-headline);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: var(--type-h4-size);
+  line-height: var(--type-h4-lh);
+  font-weight: 400;
+  color: var(--color-text-primary);
 }
 
 .product-price {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--primary-color);
+  font-family: var(--font-body);
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-secondary);
+  letter-spacing: var(--track-wide);
+}
+
+/* Grid (used in ProductList) */
+.product-list-container {
+  width: 100%;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-min-card), 1fr));
+  gap: var(--grid-gutter) var(--space-5);
+  padding: var(--space-3) 0;
+}
+
+@media (max-width: 640px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5) var(--space-3);
+  }
 }
