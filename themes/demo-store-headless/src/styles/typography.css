@@ -1,0 +1,123 @@
+/**
+ * Typography base styles — Salve
+ *
+ * Fonts are loaded from Google Fonts in index.php (production) and via Vite
+ * in dev. These rules establish defaults and provide utility classes for
+ * the SSR-rendered HTML and React components.
+ */
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--type-h1-size);
+  line-height: var(--type-h1-lh);
+  letter-spacing: var(--track-snug);
+}
+
+h2 {
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-lh);
+  letter-spacing: var(--track-snug);
+}
+
+h3 {
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-lh);
+  font-weight: 500;
+}
+
+h4 {
+  font-family: var(--font-body);
+  font-size: var(--type-h4-size);
+  line-height: var(--type-h4-lh);
+  font-weight: 500;
+}
+
+p {
+  margin: 0;
+}
+
+p + p {
+  margin-top: var(--space-4);
+}
+
+a {
+  color: var(--color-text-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Utility type classes ---------- */
+
+.t-display {
+  font-family: var(--font-display);
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-lh);
+  font-weight: 400;
+  letter-spacing: var(--track-tight);
+}
+
+.t-body-lg {
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-lh);
+}
+
+.t-body-sm {
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+}
+
+.t-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow-size);
+  line-height: var(--type-eyebrow-lh);
+  font-weight: 600;
+  letter-spacing: var(--track-widest);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.t-label {
+  font-family: var(--font-body);
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-lh);
+  font-weight: 600;
+  letter-spacing: var(--track-wider);
+  text-transform: uppercase;
+}
+
+.t-caption {
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-lh);
+  letter-spacing: var(--track-wide);
+  color: var(--color-text-secondary);
+}
+
+.t-secondary { color: var(--color-text-secondary); }
+.t-muted     { color: var(--color-text-muted); }

@@ -1,14 +1,84 @@
 .site-footer {
-  border-top: 1px solid var(--border-color);
-  background: var(--background-subtle);
-  margin-top: 4rem;
+  margin-top: var(--space-9);
+  background: var(--color-bg-subtle);
+  border-top: var(--border-width) solid var(--color-border-subtle);
 }
 
 .footer-content {
-  max-width: 1280px;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 1.5rem;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.875rem;
+  padding: var(--space-8) var(--container-padding);
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: var(--space-7);
+  align-items: start;
+}
+
+.footer-brand .footer-logo {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: var(--space-3);
+}
+
+.footer-brand .footer-tagline {
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  color: var(--color-text-secondary);
+  max-width: 28ch;
+}
+
+.footer-column h4 {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: var(--track-widest);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.footer-column nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footer-column a {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.footer-column a:hover {
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-bottom {
+  border-top: var(--border-width) solid var(--color-border-subtle);
+  margin: 0 auto;
+  max-width: var(--container-max);
+  padding: var(--space-4) var(--container-padding);
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--type-caption-size);
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding: var(--space-7) var(--container-padding);
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--space-2);
+    text-align: center;
+  }
 }

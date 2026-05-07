@@ -4,29 +4,59 @@
  * Port improvements both ways. Identifier mapping when porting:
  *   localStorage key 'demo-store-cart-token' ↔ 'base-headless-cart-token'
  *   script handle    'demo-store-app'        ↔ 'base-headless-app'
+ *
+ * NOTE: the demo-data fallback at the bottom is demo-store specific.
+ * base-headless ships without it. Skip when porting back.
  */
 
 import { storeApiRequest } from './storeApi';
+import { getDemoCart, clearDemoCart } from '../data/demoProducts';
+
+const isDemo = typeof window !== 'undefined' && !window.wpData;
 
 export function getCheckout() {
+  if (isDemo) {
+    return Promise.resolve({
+      payment_methods: ['demo'],
+      billing_address: {},
+      shipping_address: {},
+    });
+  }
   return storeApiRequest('checkout');
 }
 
 export function submitCheckout(payload) {
-  return storeApiRequest('checkout', {
-    method: 'POST',
-    body: payload,
-  });
+  if (isDemo) {
+    const cart = getDemoCart();
+    const fakeOrder = {
+      order_id: Math.floor(Math.random() * 90000) + 10000,
+      order_key: 'demo-' + Math.random().toString(36).slice(2, 10),
+      status: 'processing',
+      payment_method: payload.payment_method || 'demo',
+      payment_method_title: 'Demo (no real charge)',
+      billing_address: payload.billing_address,
+      shipping_address: payload.shipping_address || payload.billing_address,
+      items: cart.items,
+      totals: cart.totals,
+    };
+    clearDemoCart();
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(`demo-order-${fakeOrder.order_id}`, JSON.stringify(fakeOrder));
+    }
+    return Promise.resolve(fakeOrder);
+  }
+  return storeApiRequest('checkout', { method: 'POST', body: payload });
 }
 
-/**
- * Order details fetched by id + key. The Store API uses a `key` query param
- * (the order's view key) instead of authentication for guest order lookups.
- */
 export function getOrder(orderId, orderKey) {
-  return storeApiRequest(`order/${orderId}`, {
-    query: { key: orderKey },
-  });
+  if (isDemo) {
+    if (typeof window !== 'undefined') {
+      const stored = sessionStorage.getItem(`demo-order-${orderId}`);
+      if (stored) return Promise.resolve(JSON.parse(stored));
+    }
+    return Promise.reject(new Error('Order not found'));
+  }
+  return storeApiRequest(`order/${orderId}`, { query: { key: orderKey } });
 }
 
 export function validateCheckoutForm(data) {

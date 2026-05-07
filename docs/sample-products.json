@@ -1,0 +1,196 @@
+{
+  "products": [
+    {
+      "id": 100,
+      "slug": "resurfacing-serum",
+      "sku": "SLV-001",
+      "name": "Resurfacing Serum",
+      "short_description": "10% glycolic acid. Nightly resurfacing for refined, even skin.",
+      "description": "A gentle nightly serum formulated with 10% glycolic acid and panthenol. Resurfaces without stripping; pairs with the Hydrating Mist for a balanced routine. 30 mL.",
+      "price": 2800,
+      "image": "/wp-content/themes/demo-store-headless/public/products/resurfacing-serum.jpg",
+      "credit": {
+        "photographer": "Vie Studio",
+        "photographer_url": "https://www.pexels.com/@vie-studio",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/glass-bottle-with-pipette-4857810/"
+      }
+    },
+    {
+      "id": 101,
+      "slug": "geranium-hand-wash",
+      "sku": "SLV-002",
+      "name": "Geranium Hand Wash",
+      "short_description": "A botanical hand wash with rose geranium and aloe.",
+      "description": "Daily hand wash with rose geranium, aloe, and panthenol. Foams gently, rinses cleanly. Designed for the basin you see most. 500 mL.",
+      "price": 1400,
+      "image": "/wp-content/themes/demo-store-headless/public/products/geranium-hand-wash.jpg",
+      "credit": {
+        "photographer": "Ron Lach",
+        "photographer_url": "https://www.pexels.com/@ron-lach",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/bottles-of-soap-on-white-background-10574057/"
+      }
+    },
+    {
+      "id": 102,
+      "slug": "hydrating-face-mist",
+      "sku": "SLV-003",
+      "name": "Hydrating Face Mist",
+      "short_description": "Rosewater and hyaluronic acid. Sets makeup, refreshes skin.",
+      "description": "A weightless rosewater mist with low-molecular hyaluronic acid. Use post-cleanse, mid-day, or to set powder. 100 mL.",
+      "price": 1900,
+      "image": "/wp-content/themes/demo-store-headless/public/products/hydrating-face-mist.jpg",
+      "credit": {
+        "photographer": "mearlywan",
+        "photographer_url": "https://www.pexels.com/@mearlywan-307951439",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/a-person-holding-a-spray-bottle-14311552/"
+      }
+    },
+    {
+      "id": 103,
+      "slug": "volume-two-cleanser",
+      "sku": "SLV-004",
+      "name": "Volume Two Cleanser",
+      "short_description": "A gel-to-foam cleanser with green tea and amino acids.",
+      "description": "Our second cleanser — gentler than the original, designed for daily use. Gel to foam, removes SPF and light makeup. 200 mL.",
+      "price": 2200,
+      "image": "/wp-content/themes/demo-store-headless/public/products/volume-two-cleanser.jpg",
+      "credit": {
+        "photographer": "Amazing Clicks by Arjun",
+        "photographer_url": "https://www.pexels.com/@amazing-clicks-by-arjun-2154672912",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/mistincare-salicylic-acid-face-wash-bottle-33343236/"
+      }
+    },
+    {
+      "id": 104,
+      "slug": "botanical-face-oil",
+      "sku": "SLV-005",
+      "name": "Botanical Face Oil",
+      "short_description": "A nightly face oil with squalane, jojoba, and rosehip.",
+      "description": "A non-comedogenic face oil pressed from squalane, jojoba, and rosehip. Two to three drops, evening only. Best applied to damp skin. 30 mL.",
+      "price": 3400,
+      "image": "/wp-content/themes/demo-store-headless/public/products/botanical-face-oil.jpg",
+      "credit": {
+        "photographer": "www.kaboompics.com",
+        "photographer_url": "https://www.pexels.com/@karola-g",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/close-up-of-dropper-adding-liquid-to-bottle-4021782/"
+      }
+    },
+    {
+      "id": 105,
+      "slug": "eucalyptus-body-wash",
+      "sku": "SLV-006",
+      "name": "Eucalyptus Body Wash",
+      "short_description": "Body wash with eucalyptus, lemon myrtle, and oat extract.",
+      "description": "A grounded morning shower with eucalyptus and lemon myrtle. Oat extract softens; lather is generous without being squeaky. 500 mL.",
+      "price": 1800,
+      "image": "/wp-content/themes/demo-store-headless/public/products/eucalyptus-body-wash.jpg",
+      "credit": {
+        "photographer": "Mathilde Langevin",
+        "photographer_url": "https://www.pexels.com/@mathilde",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/clear-plastic-pump-bottle-with-yellow-liquid-inside-14354729/"
+      }
+    },
+    {
+      "id": 106,
+      "slug": "vitamin-c-toner",
+      "sku": "SLV-007",
+      "name": "Vitamin C Toner",
+      "short_description": "Brightening toner with stable 5% ascorbic acid.",
+      "description": "A water-light toner with 5% stabilised vitamin C and licorice root. Use morning under SPF; layer with a moisturiser. 150 mL.",
+      "price": 2100,
+      "image": "/wp-content/themes/demo-store-headless/public/products/vitamin-c-toner.jpg",
+      "credit": {
+        "photographer": "mearlywan",
+        "photographer_url": "https://www.pexels.com/@mearlywan-307951439",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/a-pink-bottle-of-a-beauty-product-and-a-mirror-13608712/"
+      }
+    },
+    {
+      "id": 107,
+      "slug": "niacinamide-serum",
+      "sku": "SLV-008",
+      "name": "Niacinamide Serum",
+      "short_description": "10% niacinamide and zinc. For pores and blemish-prone skin.",
+      "description": "A pore-refining serum with 10% niacinamide and 1% zinc PCA. Twice daily, on cleansed skin. Pairs well with the Resurfacing Serum on alternate nights. 30 mL.",
+      "price": 2400,
+      "image": "/wp-content/themes/demo-store-headless/public/products/niacinamide-serum.jpg",
+      "credit": {
+        "photographer": "Vie Studio",
+        "photographer_url": "https://www.pexels.com/@vie-studio",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/a-dropper-and-a-bottle-on-the-brown-paper-7006152/"
+      }
+    },
+    {
+      "id": 108,
+      "slug": "amber-body-cream",
+      "sku": "SLV-009",
+      "name": "Amber Body Cream",
+      "short_description": "A rich amber-scented body cream with shea and ceramides.",
+      "description": "Our richest body cream — shea, ceramides, and a warm amber accord. Designed for after-shower or pre-bed. 200 mL jar, glass.",
+      "price": 2600,
+      "image": "/wp-content/themes/demo-store-headless/public/products/amber-body-cream.jpg",
+      "credit": {
+        "photographer": "SHVETS production",
+        "photographer_url": "https://www.pexels.com/@shvets-production",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/a-female-holding-cosmetic-cream-9774603/"
+      }
+    },
+    {
+      "id": 109,
+      "slug": "restorative-lip-balm",
+      "sku": "SLV-010",
+      "name": "Restorative Lip Balm",
+      "short_description": "Beeswax and shea lip balm. Unscented.",
+      "description": "A simple, restorative lip balm — beeswax, shea, jojoba, vitamin E. Unscented. 12 g tin.",
+      "price": 600,
+      "image": "/wp-content/themes/demo-store-headless/public/products/restorative-lip-balm.jpg",
+      "credit": {
+        "photographer": "Antoni Shkraba Studio",
+        "photographer_url": "https://www.pexels.com/@shkrabaanthony",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/lip-balm-in-can-containers-6187577/"
+      }
+    },
+    {
+      "id": 110,
+      "slug": "calming-bath-salts",
+      "sku": "SLV-011",
+      "name": "Calming Bath Salts",
+      "short_description": "Magnesium-rich bath salts with lavender and chamomile.",
+      "description": "Coarse Himalayan and Epsom salts with dried lavender and chamomile. Two scoops to a warm bath. 400 g.",
+      "price": 1600,
+      "image": "/wp-content/themes/demo-store-headless/public/products/calming-bath-salts.jpg",
+      "credit": {
+        "photographer": "Alina Vilchenko",
+        "photographer_url": "https://www.pexels.com/@monstera",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/close-up-of-jar-with-aromatherapy-salt-7777104/"
+      }
+    },
+    {
+      "id": 111,
+      "slug": "verbena-hand-cream",
+      "sku": "SLV-012",
+      "name": "Verbena Hand Cream",
+      "short_description": "A non-greasy hand cream with shea butter and verbena.",
+      "description": "A hand cream that absorbs in seconds. Shea butter, sweet almond oil, verbena. Carry it; reapply often. 75 mL tube.",
+      "price": 1200,
+      "image": "/wp-content/themes/demo-store-headless/public/products/verbena-hand-cream.jpg",
+      "credit": {
+        "photographer": "Mike Murray",
+        "photographer_url": "https://www.pexels.com/@content-prod-co",
+        "source": "Pexels",
+        "source_url": "https://www.pexels.com/photo/person-holding-a-hand-cream-6925488/"
+      }
+    }
+  ]
+}

@@ -12,7 +12,7 @@ import '../styles/Header.css';
 
 function Header() {
   const { itemCount } = useCart();
-  const siteName = window.wpData?.siteName || 'Demo Store';
+  const siteName = window.wpData?.siteName || 'Salve';
 
   return (
     <header className="site-header">
@@ -23,8 +23,7 @@ function Header() {
         <nav className="site-nav">
           <Link to="/shop" className="nav-link">Shop</Link>
           <Link to="/cart" className="nav-link cart-link">
-            Cart
-            {itemCount > 0 && <span className="cart-count-badge">{itemCount}</span>}
+            Cart{itemCount > 0 && <span className="cart-count">({itemCount})</span>}
           </Link>
         </nav>
       </div>

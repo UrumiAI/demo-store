@@ -1,317 +1,137 @@
-/**
- * Order Confirmation Page Styles - Luxury Fashion
- *
- * @author Urumi.ai
- */
-
 .order-confirmation-page {
-  max-width: 1200px;
+  max-width: var(--container-narrow);
   margin: 0 auto;
-  padding: 3rem 3rem 6rem;
 }
 
 .confirmation-header {
   text-align: center;
-  padding: 3rem 2rem;
-  border-bottom: 1px solid var(--luxury-light-gray);
-  margin-bottom: 4rem;
-}
-
-.success-icon {
-  display: inline-block;
-  margin-bottom: 2rem;
-}
-
-.success-icon svg {
-  color: #4caf50;
-  stroke-width: 2;
+  margin-bottom: var(--space-7);
 }
 
 .confirmation-header h1 {
-  font-family: var(--serif-font);
-  font-size: 2.5rem;
-  font-weight: 500;
-  letter-spacing: 4px;
-  color: var(--luxury-black);
-  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--type-h1-size);
 }
 
-.order-number {
-  font-size: 1rem;
-  letter-spacing: 2px;
-  color: var(--luxury-gray);
-  margin-bottom: 2rem;
+.confirmation-header .order-number {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-secondary);
+  letter-spacing: var(--track-wide);
+  margin-top: var(--space-3);
 }
 
-/* Confirmation Message */
 .confirmation-message {
   text-align: center;
-  padding: 2rem;
-  background-color: var(--luxury-cream);
-  margin-bottom: 3rem;
+  font-size: var(--type-body-lg-size);
+  color: var(--color-text-secondary);
+  max-width: 56ch;
+  margin: 0 auto var(--space-7);
 }
 
-.confirmation-message p {
-  font-size: 0.95rem;
-  line-height: 1.8;
-  letter-spacing: 0.5px;
-  color: var(--luxury-gray);
-}
-
-/* Order Details Grid */
 .order-details-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-bottom: 4rem;
-  padding-bottom: 3rem;
-  border-bottom: 1px solid var(--luxury-light-gray);
-}
-
-.detail-section {
-  padding: 2rem;
-  background-color: var(--luxury-cream);
+  gap: var(--space-6);
+  padding: var(--space-6) 0;
+  border-top: var(--border-width) solid var(--color-border-subtle);
+  border-bottom: var(--border-width) solid var(--color-border-subtle);
 }
 
 .detail-section h3 {
-  font-family: var(--sans-font);
-  font-size: 0.75rem;
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow-size);
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: var(--track-widest);
   text-transform: uppercase;
-  color: var(--luxury-black);
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--luxury-light-gray);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
 }
 
 .detail-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
-  font-size: 0.85rem;
+  padding: var(--space-1) 0;
+  font-size: var(--type-body-sm-size);
 }
 
-.detail-item .label {
-  color: var(--luxury-gray);
-  letter-spacing: 0.5px;
-}
+.detail-item .label { color: var(--color-text-secondary); }
+.detail-item .value { color: var(--color-text-primary); }
 
-.detail-item .value {
-  color: var(--luxury-black);
-  font-weight: 500;
-}
-
-.detail-item .status {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #4caf50;
-}
-
-/* Address */
 .address {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-primary);
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 2px;
 }
 
-.address p {
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--luxury-gray);
-  letter-spacing: 0.5px;
-}
+.address .contact-info { color: var(--color-text-secondary); margin-top: var(--space-2); }
 
-.address .contact-info {
-  margin-top: 0.5rem;
-  color: var(--luxury-black);
-}
-
-/* Order Items Section */
 .order-items-section {
-  margin-bottom: 4rem;
+  padding: var(--space-6) 0;
 }
 
 .order-items-section h3 {
-  font-family: var(--sans-font);
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow-size);
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: var(--track-widest);
   text-transform: uppercase;
-  color: var(--luxury-black);
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--luxury-light-gray);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
 }
 
-/* Order Items Table */
 .order-items-table {
-  background-color: var(--luxury-cream);
-  padding: 2rem;
-  margin-bottom: 2rem;
+  border-top: var(--border-width) solid var(--color-border-subtle);
 }
 
-.table-header {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--luxury-light-gray);
-  margin-bottom: 1rem;
-}
-
-.table-header span {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--luxury-black);
-}
-
+.table-header,
 .table-row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
-  gap: 2rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--luxury-light-gray);
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  font-size: var(--type-body-sm-size);
+  border-bottom: var(--border-width) solid var(--color-border-subtle);
 }
 
-.table-row:last-child {
-  border-bottom: none;
-}
-
-.table-row .item-name {
-  font-size: 0.85rem;
-  letter-spacing: 1px;
+.table-header {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: var(--track-wide);
   text-transform: uppercase;
-  color: var(--luxury-black);
-  font-weight: 500;
+  font-size: var(--type-eyebrow-size);
 }
 
-.table-row .item-qty {
-  font-size: 0.85rem;
-  color: var(--luxury-gray);
-}
-
-.table-row .item-total {
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: var(--luxury-black);
-  text-align: right;
-}
-
-/* Order Totals */
-.order-totals {
-  padding: 2rem;
-  background-color: var(--luxury-cream);
-}
-
-.order-totals .total-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  color: var(--luxury-gray);
-}
-
-.order-totals .total-line:last-child {
-  margin-bottom: 0;
-}
-
-.order-totals .grand-total {
-  font-size: 1.3rem;
-  font-weight: 500;
-  color: var(--luxury-black);
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--luxury-light-gray);
-}
-
-/* Actions */
 .confirmation-actions {
   text-align: center;
-  padding-top: 2rem;
+  margin-top: var(--space-7);
 }
 
-.continue-btn {
-  padding: 1rem 3rem;
-  background-color: var(--luxury-black);
-  color: var(--luxury-white);
-  border: none;
-  font-size: 0.75rem;
+.continue-btn,
+.back-btn {
+  display: inline-flex;
+  background: transparent;
+  color: var(--color-text-primary);
+  border: var(--border-width) solid var(--color-border-strong);
+  font-family: var(--font-body);
+  font-size: var(--type-label-size);
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: var(--track-wider);
   text-transform: uppercase;
+  padding: 14px 28px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: var(--sans-font);
+  border-radius: var(--radius-none);
+  transition: background-color var(--duration-base), color var(--duration-base);
 }
 
-.continue-btn:hover {
-  background-color: var(--luxury-white);
-  color: var(--luxury-black);
-  border: 1px solid var(--luxury-black);
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .order-details-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+.continue-btn:hover,
+.back-btn:hover {
+  background: var(--color-text-primary);
+  color: var(--color-text-inverse);
 }
 
 @media (max-width: 768px) {
-  .order-confirmation-page {
-    padding: 2rem 1.5rem 4rem;
-  }
-
-  .confirmation-header {
-    padding: 2rem 1rem;
-  }
-
-  .confirmation-header h1 {
-    font-size: 2rem;
-    letter-spacing: 3px;
-  }
-
-  .order-details-grid {
-    gap: 1rem;
-  }
-
-  .detail-section {
-    padding: 1.5rem;
-  }
-
-  .table-header,
-  .table-row {
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .order-items-table {
-    padding: 1.5rem;
-  }
-
-  .order-totals {
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .confirmation-header h1 {
-    font-size: 1.5rem;
-    letter-spacing: 2px;
-  }
-
-  .table-header,
-  .table-row {
-    font-size: 0.8rem;
-  }
-
-  .table-row .item-name {
-    font-size: 0.75rem;
-  }
+  .order-details-grid { grid-template-columns: 1fr; gap: var(--space-5); }
 }

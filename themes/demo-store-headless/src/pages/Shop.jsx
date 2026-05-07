@@ -12,7 +12,8 @@ function Shop() {
   return (
     <>
       <section className="collection-title">
-        <h2>Shop</h2>
+        <span className="eyebrow">Catalogue</span>
+        <h1>Shop</h1>
         <div className="title-divider" />
       </section>
       <ProductList perPage={24} />
