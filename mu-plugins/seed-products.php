@@ -3,13 +3,14 @@
  * Seed script for Glow & Co. cosmetics demo store.
  * Run via: wp eval-file mu-plugins/seed-products.php --allow-root
  *
- * Lives in mu-plugins/ so it ships with every deploy, but bail out during
- * normal page loads. mu-plugins load before WooCommerce, so executing the
- * body on each request would fatal at `new WC_Product_Simple()` (line ~115).
- * `wp eval-file` sets WP_CLI=true and loads WC first, so the seeder runs
- * cleanly when invoked that way.
+ * Lives in mu-plugins/ so it ships with every deploy, but the body must only
+ * run when WooCommerce classes are available — mu-plugins load before
+ * WooCommerce, so any execution that hits `new WC_Product_Simple()` before
+ * WC is loaded fatals. `wp eval-file` loads WC first, so the seeder runs
+ * cleanly. Guard against everything else (page loads AND other wp-cli
+ * commands like `wp theme list`).
  */
-if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
+if ( ! class_exists( 'WC_Product_Simple' ) ) {
     return;
 }
 
