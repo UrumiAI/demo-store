@@ -1,0 +1,367 @@
+/**
+ * Product Detail Page Styles - Luxury Fashion
+ *
+ * @author Urumi.ai
+ */
+
+.product-detail-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 3rem 3rem 6rem;
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-black);
+  text-decoration: none;
+  margin-bottom: 3rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--sans-font);
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.back-link:hover {
+  opacity: 0.6;
+}
+
+.product-detail-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 6rem;
+  align-items: start;
+}
+
+/* Image Section */
+.product-image-section {
+  position: sticky;
+  top: 120px;
+}
+
+.main-image-wrapper {
+  width: 100%;
+  padding-top: 133.33%; /* 3:4 aspect ratio */
+  position: relative;
+  background-color: var(--luxury-cream);
+  overflow: hidden;
+}
+
+.main-product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+/* Thumbnail Gallery */
+.thumbnail-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.thumbnail {
+  width: 100%;
+  padding-top: 133.33%; /* 3:4 aspect ratio */
+  position: relative;
+  background-color: var(--luxury-cream);
+  border: 2px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.thumbnail:hover {
+  border-color: var(--luxury-light-gray);
+}
+
+.thumbnail.active {
+  border-color: var(--luxury-black);
+}
+
+.thumbnail img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Info Section */
+.product-info-section {
+  padding: 2rem 0;
+}
+
+.product-header {
+  margin-bottom: 2rem;
+}
+
+.product-title {
+  font-family: var(--sans-font);
+  font-size: 1.8rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--luxury-black);
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.product-price-detail {
+  font-family: var(--sans-font);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--luxury-gray);
+}
+
+.product-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--luxury-light-gray);
+  margin: 2rem 0;
+}
+
+/* Description */
+.product-description {
+  margin-bottom: 3rem;
+}
+
+.product-description h3 {
+  font-family: var(--sans-font);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-black);
+  margin-bottom: 1rem;
+}
+
+.product-description p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--luxury-gray);
+  font-weight: 300;
+}
+
+/* Quantity Selector */
+.quantity-selector {
+  margin-bottom: 2rem;
+}
+
+.quantity-selector label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-black);
+  margin-bottom: 0.75rem;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border: 1px solid var(--luxury-light-gray);
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--luxury-black);
+  cursor: pointer;
+  padding: 0.25rem 0.75rem;
+  transition: opacity 0.3s ease;
+  font-weight: 300;
+}
+
+.qty-btn:hover {
+  opacity: 0.6;
+}
+
+.qty-value {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--luxury-black);
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.add-to-bag-btn,
+.buy-now-btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--sans-font);
+  border: 1px solid var(--luxury-black);
+}
+
+.add-to-bag-btn {
+  background-color: var(--luxury-black);
+  color: var(--luxury-white);
+}
+
+.add-to-bag-btn:hover:not(:disabled) {
+  background-color: var(--luxury-white);
+  color: var(--luxury-black);
+}
+
+.add-to-bag-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.buy-now-btn {
+  background-color: var(--luxury-white);
+  color: var(--luxury-black);
+}
+
+.buy-now-btn:hover {
+  background-color: var(--luxury-black);
+  color: var(--luxury-white);
+}
+
+/* Product Meta */
+.product-meta {
+  padding-top: 2rem;
+  border-top: 1px solid var(--luxury-light-gray);
+}
+
+.meta-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--luxury-black);
+}
+
+.meta-value {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--luxury-gray);
+  text-transform: uppercase;
+}
+
+/* Error State */
+.error-state {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.error-state p {
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  color: var(--luxury-gray);
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  padding: 0.75rem 2rem;
+  background-color: var(--luxury-black);
+  color: var(--luxury-white);
+  border: none;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--sans-font);
+}
+
+.back-btn:hover {
+  background-color: var(--luxury-white);
+  color: var(--luxury-black);
+  border: 1px solid var(--luxury-black);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .product-detail-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .product-image-section {
+    position: relative;
+    top: 0;
+  }
+
+  .thumbnail-gallery {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-detail-page {
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .back-link {
+    margin-bottom: 2rem;
+  }
+
+  .product-title {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+  }
+
+  .product-price-detail {
+    font-size: 1.2rem;
+  }
+
+  .action-buttons {
+    gap: 0.75rem;
+  }
+
+  .thumbnail-gallery {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-title {
+    font-size: 1.2rem;
+  }
+
+  .quantity-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

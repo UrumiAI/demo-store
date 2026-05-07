@@ -1,0 +1,5 @@
+config_version: 1
+
+folder_mappings:
+  - source: themes
+    target: wp-content/themes

@@ -1,0 +1,313 @@
+/**
+ * Shopping Cart Page Styles - Luxury Fashion
+ *
+ * @author Urumi.ai
+ */
+
+.cart-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 3rem 6rem;
+}
+
+.cart-header {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-bottom: 1px solid var(--luxury-light-gray);
+  margin-bottom: 3rem;
+}
+
+.cart-header h1 {
+  font-family: var(--serif-font);
+  font-size: 2.5rem;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: var(--luxury-black);
+  margin-bottom: 1.5rem;
+}
+
+.cart-count {
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-gray);
+  margin-top: 1rem;
+}
+
+/* Empty Cart */
+.empty-cart {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.empty-cart p {
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  color: var(--luxury-gray);
+  margin-bottom: 2rem;
+}
+
+/* Cart Container */
+.cart-container {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Cart Items */
+.cart-items-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 150px 1fr auto;
+  gap: 2rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--luxury-light-gray);
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-image {
+  width: 150px;
+  height: 200px;
+  background-color: var(--luxury-cream);
+  overflow: hidden;
+}
+
+.cart-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Cart Item Details */
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cart-item-name {
+  font-family: var(--sans-font);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--luxury-black);
+}
+
+.cart-item-price {
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  color: var(--luxury-gray);
+}
+
+.cart-item-quantity {
+  margin-top: 0.5rem;
+}
+
+.cart-item-quantity label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--luxury-black);
+  margin-bottom: 0.5rem;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--luxury-gray);
+  cursor: pointer;
+  padding: 0;
+  margin-top: auto;
+  transition: color 0.3s ease;
+  font-family: var(--sans-font);
+  text-align: left;
+}
+
+.remove-btn:hover {
+  color: var(--luxury-black);
+}
+
+.cart-item-total {
+  text-align: right;
+}
+
+.cart-item-total p {
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--luxury-black);
+}
+
+/* Cart Summary */
+.cart-summary-section {
+  position: sticky;
+  top: 120px;
+}
+
+.cart-summary {
+  background-color: var(--luxury-cream);
+  padding: 2.5rem;
+}
+
+.cart-summary h2 {
+  font-family: var(--sans-font);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--luxury-black);
+  margin-bottom: 2rem;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  color: var(--luxury-gray);
+}
+
+.summary-line.total {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--luxury-black);
+  margin-top: 1.5rem;
+}
+
+.summary-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--luxury-light-gray);
+  margin: 1.5rem 0;
+}
+
+/* Buttons */
+.checkout-btn,
+.continue-shopping-btn,
+.clear-cart-btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--sans-font);
+  border: 1px solid var(--luxury-black);
+  margin-top: 1rem;
+}
+
+.checkout-btn {
+  background-color: var(--luxury-black);
+  color: var(--luxury-white);
+}
+
+.checkout-btn:hover {
+  background-color: var(--luxury-white);
+  color: var(--luxury-black);
+}
+
+.continue-shopping-btn {
+  background-color: var(--luxury-white);
+  color: var(--luxury-black);
+}
+
+.continue-shopping-btn:hover {
+  background-color: var(--luxury-black);
+  color: var(--luxury-white);
+}
+
+.clear-cart-btn {
+  background-color: transparent;
+  color: var(--luxury-gray);
+  border: 1px solid var(--luxury-light-gray);
+  font-size: 0.7rem;
+}
+
+.clear-cart-btn:hover {
+  color: var(--luxury-black);
+  border-color: var(--luxury-black);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .cart-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .cart-summary-section {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .cart-page {
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .cart-header {
+    padding: 2rem 1rem;
+  }
+
+  .cart-header h1 {
+    font-size: 2rem;
+    letter-spacing: 3px;
+  }
+
+  .cart-item {
+    grid-template-columns: 100px 1fr;
+    gap: 1.5rem;
+  }
+
+  .cart-item-image {
+    width: 100px;
+    height: 133px;
+  }
+
+  .cart-item-total {
+    grid-column: 2;
+    text-align: left;
+    margin-top: 1rem;
+  }
+
+  .cart-summary {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-item {
+    grid-template-columns: 80px 1fr;
+    gap: 1rem;
+  }
+
+  .cart-item-image {
+    width: 80px;
+    height: 107px;
+  }
+
+  .cart-item-name {
+    font-size: 0.85rem;
+  }
+}
