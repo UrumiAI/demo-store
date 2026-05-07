@@ -1,8 +1,17 @@
 <?php
 /**
  * Seed script for Glow & Co. cosmetics demo store.
- * Run via: wp eval-file seed-products.php --allow-root
+ * Run via: wp eval-file mu-plugins/seed-products.php --allow-root
+ *
+ * Lives in mu-plugins/ so it ships with every deploy, but bail out during
+ * normal page loads. mu-plugins load before WooCommerce, so executing the
+ * body on each request would fatal at `new WC_Product_Simple()` (line ~115).
+ * `wp eval-file` sets WP_CLI=true and loads WC first, so the seeder runs
+ * cleanly when invoked that way.
  */
+if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
+    return;
+}
 
 // Category mapping (from creation output)
 $cats = [
