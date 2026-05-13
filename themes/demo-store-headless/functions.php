@@ -22,6 +22,13 @@ require_once get_template_directory() . '/inc/ssr-router.php';
 require_once get_template_directory() . '/inc/ssr-data.php';
 require_once get_template_directory() . '/inc/ssr-schema.php';
 
+// Demo-store-only: WP-CLI data seeder for the analytics-AI demo
+// (gross margin, AOV, LTV, refund-rate, etc.). Zero runtime impact
+// outside WP-CLI. NOT ported back to base-headless — demo-only fixture.
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+    require_once get_template_directory() . '/inc/demo-seeder.php';
+}
+
 function demo_store_setup() {
     add_theme_support('woocommerce');
     add_theme_support('wc-product-gallery-zoom');
