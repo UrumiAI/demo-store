@@ -14,7 +14,7 @@ function Home() {
   return (
     <>
       <section className="collection-title">
-        <span className="eyebrow">Considered cosmetics</span>
+        <span className="eyebrow">E2E Final</span>
         <h1>{siteName}</h1>
         <div className="title-divider" />
       </section>
