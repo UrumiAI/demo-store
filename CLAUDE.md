@@ -49,6 +49,19 @@ query params like `per_page`, `min_price`, `max_price`, `search`, `category`.
 
 ## Workspace deployment
 
+**Preferred workflow: local git + SSH**
+
+1. Edit code locally in the git clone.
+2. Build locally (`npm run build` in the theme directory).
+3. Test via SSH into the workspace — WordPress runs there.
+   - SSH format: `ssh {tenant-slug}-workspace-{index}@ssh.myscalablesite.com`
+   - Example: `ssh demo-kkzi5m-workspace-2@ssh.myscalablesite.com`
+   - WordPress root is at `/var/www/html/` (the SSH home directory).
+   - Run wp-cli: `wp option get siteurl`, `wp plugin list`, `wp cache flush`, etc.
+4. Commit source + dist, push to GitHub to deploy.
+
+**MCP tools (slow fallback)** — use only when SSH is unavailable:
+
 - Workspace URL: check via `wp option get siteurl` (MCP wp_read)
 - MCP branches use format: `urumi/ai/{workspace_index}/{slug}`
 - Use `git_create_branch` MCP action to create deploy branches
