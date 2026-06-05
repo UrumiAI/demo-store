@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "urumi-prod": {
+      "type": "http",
+      "url": "https://mcp.urumi.ai/mcp"
+    }
+  }
+}
