@@ -53,12 +53,21 @@ query params like `per_page`, `min_price`, `max_price`, `search`, `category`.
 
 1. Edit code locally in the git clone.
 2. Build locally (`npm run build` in the theme directory).
-3. Test via SSH into the workspace — WordPress runs there.
+3. Deploy dist via SCP to the workspace:
+   ```bash
+   DEST=/var/www/html/workspaces/2/html/wp-content/themes/demo-store-headless/dist
+   scp dist/assets/* demo-kkzi5m-workspace-2@ssh.myscalablesite.com:$DEST/assets/
+   scp dist/index.html demo-kkzi5m-workspace-2@ssh.myscalablesite.com:$DEST/
+   ```
+4. Test via SSH into the workspace — WordPress runs there.
    - SSH format: `ssh {tenant-slug}-workspace-{index}@ssh.myscalablesite.com`
    - Example: `ssh demo-kkzi5m-workspace-2@ssh.myscalablesite.com`
-   - WordPress root is at `/var/www/html/` (the SSH home directory).
+   - SSH home: `/var/www/html/workspaces/2/` — WordPress is under `html/`.
+   - Theme path on workspace: `html/wp-content/themes/demo-store-headless/`
+   - SCP requires absolute paths (e.g. `/var/www/html/workspaces/2/html/...`),
+     relative paths from SSH home don't work with SCP.
    - Run wp-cli: `wp option get siteurl`, `wp plugin list`, `wp cache flush`, etc.
-4. Commit source + dist, push to GitHub to deploy.
+5. Commit source + dist, push to GitHub to deploy.
 
 **MCP tools (slow fallback)** — use only when SSH is unavailable:
 
