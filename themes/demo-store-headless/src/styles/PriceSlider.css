@@ -1,0 +1,163 @@
+/**
+ * PriceSlider styles — Salve cosmetic store
+ *
+ * NOTE: demo-store specific — do not port to base-headless.
+ */
+
+.price-slider {
+  max-width: 320px;
+  margin: 0 auto var(--space-5);
+  text-align: center;
+}
+
+.price-slider__label {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: var(--track-widest);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+  display: block;
+}
+
+.price-slider__track-wrapper {
+  position: relative;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.price-slider__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border-subtle);
+  pointer-events: none;
+}
+
+.price-slider__range {
+  position: absolute;
+  height: 1px;
+  background: var(--color-border-strong);
+  pointer-events: none;
+}
+
+/* Shared input styles */
+.price-slider__input {
+  position: absolute;
+  width: 100%;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+}
+
+.price-slider__input::-webkit-slider-runnable-track {
+  height: 1px;
+  background: transparent;
+  border: none;
+}
+
+.price-slider__input::-moz-range-track {
+  height: 1px;
+  background: transparent;
+  border: none;
+}
+
+/* WebKit thumb */
+.price-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-bg-elevated);
+  border: var(--border-width) solid var(--color-border-strong);
+  cursor: pointer;
+  pointer-events: auto;
+  margin-top: -7px;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.price-slider__input:active::-webkit-slider-thumb {
+  background: var(--color-text-primary);
+}
+
+/* Firefox thumb */
+.price-slider__input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-bg-elevated);
+  border: var(--border-width) solid var(--color-border-strong);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.price-slider__input:active::-moz-range-thumb {
+  background: var(--color-text-primary);
+}
+
+/* Z-index layering */
+.price-slider__input--min {
+  z-index: 2;
+}
+
+.price-slider__input--max {
+  z-index: 1;
+}
+
+.price-slider__input--min.price-slider__input--swap {
+  z-index: 1;
+}
+
+.price-slider__input--max.price-slider__input--swap {
+  z-index: 2;
+}
+
+/* Values display */
+.price-slider__values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-secondary);
+  letter-spacing: var(--track-wide);
+}
+
+/* Reset button */
+.price-slider__reset {
+  display: inline-block;
+  margin-top: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--type-caption-size);
+  font-weight: 600;
+  letter-spacing: var(--track-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.price-slider__reset:hover {
+  color: var(--color-text-primary);
+}
+
+/* Disabled state */
+.price-slider--disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}

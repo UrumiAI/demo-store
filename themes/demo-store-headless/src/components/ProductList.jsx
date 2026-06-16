@@ -4,13 +4,22 @@
  * Port improvements both ways. Identifier mapping when porting:
  *   localStorage key 'demo-store-cart-token' ↔ 'base-headless-cart-token'
  *   script handle    'demo-store-app'        ↔ 'base-headless-app'
+ *
+ * NOTE: minPrice / maxPrice / currencyMinorUnit props and emptyMessage
+ * are demo-store specific. base-headless does not use them.
  */
 
 import { useEffect, useState } from 'react';
 import { getProducts } from '../api/products';
 import ProductCard from './ProductCard';
 
-function ProductList({ perPage = 12 }) {
+function ProductList({
+  perPage = 12,
+  minPrice,
+  maxPrice,
+  currencyMinorUnit,
+  emptyMessage = 'No products yet.',
+}) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,7 +27,7 @@ function ProductList({ perPage = 12 }) {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    getProducts({ perPage })
+    getProducts({ perPage, minPrice, maxPrice, currencyMinorUnit })
       .then((data) => {
         if (cancelled) return;
         setProducts(Array.isArray(data) ? data : []);
@@ -32,7 +41,7 @@ function ProductList({ perPage = 12 }) {
         if (!cancelled) setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [perPage]);
+  }, [perPage, minPrice, maxPrice, currencyMinorUnit]);
 
   if (loading) {
     return (
@@ -48,7 +57,7 @@ function ProductList({ perPage = 12 }) {
   }
 
   if (products.length === 0) {
-    return <div className="empty-state"><p>No products yet.</p></div>;
+    return <div className="empty-state"><p>{emptyMessage}</p></div>;
   }
 
   return (
