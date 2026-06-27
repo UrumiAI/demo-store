@@ -20,13 +20,28 @@ function pickPrice(product) {
   return '';
 }
 
+function isOnSale(product) {
+  if (product?.on_sale === true || product?.on_sale === 'true' || product?.on_sale === 1 || product?.on_sale === '1') {
+    return true;
+  }
+
+  const prices = product?.prices || {};
+  const regular = Number(prices.regular_price || 0);
+  const price = Number(prices.price || 0);
+  const sale = Number(prices.sale_price || 0);
+
+  return (sale > 0 && regular > sale) || (regular > 0 && price > 0 && price < regular);
+}
+
 function ProductCard({ product }) {
   const image = product.images?.[0]?.src || 'https://via.placeholder.com/400x400?text=No+Image';
   const slug = product.slug || product.id;
+  const onSale = isOnSale(product);
 
   return (
     <Link to={`/product/${slug}`} className="product-card">
       <div className="product-image-wrapper">
+        {onSale && <span className="sale-badge">Sale</span>}
         <img src={image} alt={product.name} loading="lazy" />
       </div>
       <div className="product-info">
