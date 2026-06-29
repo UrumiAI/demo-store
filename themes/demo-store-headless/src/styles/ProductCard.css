@@ -11,10 +11,26 @@
 }
 
 .product-image-wrapper {
+  position: relative;
   width: 100%;
   aspect-ratio: 4 / 5;
   background: var(--color-bg-subtle);
   overflow: hidden;
+}
+
+.sale-badge {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 2;
+  padding: 6px 10px;
+  font-family: var(--font-body);
+  font-size: var(--type-caption-size);
+  font-weight: 600;
+  letter-spacing: var(--track-wider);
+  text-transform: uppercase;
+  color: var(--color-text-inverse);
+  background: var(--color-sale);
 }
 
 .product-image-wrapper img {
