@@ -21,10 +21,10 @@ function formatPrice(prices) {
 }
 
 const energyArtwork = {
-  'voltage-citrus-energy': '/wp-content/themes/demo-store-headless/public/energy/can-cyan.svg',
-  'afterglow-cherry-energy': '/wp-content/themes/demo-store-headless/public/energy/can-pink.svg',
-  'ion-rush-lime-energy': '/wp-content/themes/demo-store-headless/public/energy/can-lime.svg',
-  'pulse-energy-starter-pack': '/wp-content/themes/demo-store-headless/public/energy/hero-cans.svg',
+  'voltage-citrus-energy': '/wp-content/themes/demo-store-headless/public/energy/photos/voltage-can.jpg',
+  'afterglow-cherry-energy': '/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg',
+  'ion-rush-lime-energy': '/wp-content/themes/demo-store-headless/public/energy/photos/ion-rush-can.jpg',
+  'pulse-energy-starter-pack': '/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg',
 };
 
 function ProductDetail() {

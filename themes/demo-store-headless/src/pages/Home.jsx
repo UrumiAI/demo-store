@@ -8,9 +8,9 @@
 
 import { Link } from 'react-router-dom';
 const flavors = [
-  { name: 'Voltage', note: 'Citrus ignition', color: 'cyan', image: '/wp-content/themes/demo-store-headless/public/energy/can-cyan.svg' },
-  { name: 'Afterglow', note: 'Cherry zero', color: 'pink', image: '/wp-content/themes/demo-store-headless/public/energy/can-pink.svg' },
-  { name: 'Ion Rush', note: 'Lime charge', color: 'lime', image: '/wp-content/themes/demo-store-headless/public/energy/can-lime.svg' },
+  { name: 'Voltage', note: 'Citrus ignition', color: 'cyan', image: '/wp-content/themes/demo-store-headless/public/energy/photos/voltage-can.jpg' },
+  { name: 'Afterglow', note: 'Cherry zero', color: 'pink', image: '/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg' },
+  { name: 'Ion Rush', note: 'Lime charge', color: 'lime', image: '/wp-content/themes/demo-store-headless/public/energy/photos/ion-rush-can.jpg' },
 ];
 
 function Home() {
@@ -35,7 +35,7 @@ function Home() {
           </div>
         </div>
         <div className="hero-art" aria-hidden="true">
-          <img src="/wp-content/themes/demo-store-headless/public/energy/hero-cans.svg" alt="" />
+          <img src="/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg" alt="" />
           <span className="hero-badge">NEW<br />DROP<br /><i>01</i></span>
         </div>
         <p className="hero-side-label">PULSE / 2026 / ZERO LIMITS</p>

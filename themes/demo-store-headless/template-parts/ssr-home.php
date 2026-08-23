@@ -26,6 +26,6 @@ $theme_uri = get_template_directory_uri();
             <p><a class="btn btn-primary" href="<?php echo esc_url(home_url('/shop')); ?>">Shop the drop <b>↗</b></a></p>
             <div class="hero-stat-row"><div><strong>180</strong><span>mg caffeine</span></div><div><strong>0</strong><span>g sugar</span></div><div><strong>+ B</strong><span>vitamins</span></div></div>
         </div>
-        <div class="hero-art"><img src="<?php echo esc_url($theme_uri . '/public/energy/hero-cans.svg'); ?>" alt="PULSE energy drinks"><span class="hero-badge">NEW<br>DROP<br><i>01</i></span></div>
+        <div class="hero-art"><img src="<?php echo esc_url($theme_uri . '/public/energy/photos/afterglow-cans.jpg'); ?>" alt="PULSE energy drinks"><span class="hero-badge">NEW<br>DROP<br><i>01</i></span></div>
     </section>
 </div>
