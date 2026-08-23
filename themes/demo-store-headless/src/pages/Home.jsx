@@ -6,6 +6,7 @@
  *   script handle    'demo-store-app'        ↔ 'base-headless-app'
  */
 
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 const flavors = [
   { name: 'Voltage', note: 'Citrus ignition', color: 'cyan', image: '/wp-content/themes/demo-store-headless/public/energy/photos/voltage-can.jpg' },
@@ -15,9 +16,32 @@ const flavors = [
 
 function Home() {
   const siteName = 'PULSE';
+  const heroRef = useRef(null);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const syncVideoToScroll = () => {
+      const hero = heroRef.current;
+      const video = videoRef.current;
+      if (!hero || !video || !Number.isFinite(video.duration)) return;
+      const top = hero.getBoundingClientRect().top;
+      const travel = Math.max(1, hero.offsetHeight);
+      const progress = Math.min(1, Math.max(0, -top / travel));
+      video.currentTime = Math.min(video.duration - 0.08, progress * video.duration);
+    };
+
+    window.addEventListener('scroll', syncVideoToScroll, { passive: true });
+    videoRef.current?.addEventListener('loadedmetadata', syncVideoToScroll, { once: true });
+    syncVideoToScroll();
+    return () => window.removeEventListener('scroll', syncVideoToScroll);
+  }, []);
+
   return (
     <div className="energy-home">
-      <section className="pulse-hero">
+      <section className="pulse-hero" ref={heroRef}>
+        <video ref={videoRef} className="hero-video" autoPlay muted loop playsInline preload="metadata" poster="/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg" aria-hidden="true">
+          <source src="/wp-content/themes/demo-store-headless/public/energy/video/neon-light-layer.mp4" type="video/mp4" />
+        </video>
         <div className="hero-orbit hero-orbit-one" />
         <div className="hero-orbit hero-orbit-two" />
         <div className="hero-copy">

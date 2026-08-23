@@ -18,6 +18,7 @@ $theme_uri = get_template_directory_uri();
 ?>
 <div class="energy-home">
     <section class="pulse-hero">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="<?php echo esc_url($theme_uri . '/public/energy/photos/afterglow-cans.jpg'); ?>" aria-hidden="true"><source src="<?php echo esc_url($theme_uri . '/public/energy/video/neon-light-layer.mp4'); ?>" type="video/mp4"></video>
         <div class="hero-orbit hero-orbit-one"></div><div class="hero-orbit hero-orbit-two"></div>
         <div class="hero-copy">
             <p class="signal-label"><span></span> ENERGY, REWIRED</p>
