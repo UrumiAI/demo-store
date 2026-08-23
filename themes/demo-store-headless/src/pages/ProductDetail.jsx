@@ -20,11 +20,11 @@ function formatPrice(prices) {
   return `${symbol}${value}`;
 }
 
-const energyArtwork = {
-  'voltage-citrus-energy': '/wp-content/themes/demo-store-headless/public/energy/photos/voltage-can.jpg',
-  'afterglow-cherry-energy': '/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg',
-  'ion-rush-lime-energy': '/wp-content/themes/demo-store-headless/public/energy/photos/ion-rush-can.jpg',
-  'pulse-energy-starter-pack': '/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg',
+const shoeArtwork = {
+  'aero-void-runner': '/wp-content/themes/demo-store-headless/public/shoes/aero-void.jpg',
+  'oxide-high': '/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg',
+  'monorail-02': '/wp-content/themes/demo-store-headless/public/shoes/monorail.jpg',
+  'orbit-footwear-pack': '/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg',
 };
 
 function ProductDetail() {
@@ -106,7 +106,7 @@ function ProductDetail() {
   }
 
   const images = product.images || [];
-  const currentImage = energyArtwork[product.slug] || images[selectedImageIndex]?.src || 'https://via.placeholder.com/800x1000?text=No+Image';
+  const currentImage = shoeArtwork[product.slug] || images[selectedImageIndex]?.src || 'https://via.placeholder.com/800x1000?text=No+Image';
 
   return (
     <div className="product-detail-page">

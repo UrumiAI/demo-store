@@ -17,7 +17,7 @@ function PlaceholderLink({ children }) {
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-  const siteName = 'PULSE';
+  const siteName = 'ORBITAL';
 
   return (
     <footer className="site-footer">
@@ -25,17 +25,17 @@ function Footer() {
         <div className="footer-brand">
           <Link to="/" className="footer-logo">{siteName}</Link>
           <p className="footer-tagline">
-            Energy for the in-between. Find your frequency.
+            Footwear systems for the way forward.
           </p>
         </div>
 
         <div className="footer-column">
           <h4>Shop</h4>
           <nav>
-            <Link to="/shop">All products</Link>
-            <PlaceholderLink>Variety packs</PlaceholderLink>
-            <PlaceholderLink>Subscription</PlaceholderLink>
-            <PlaceholderLink>Store locator</PlaceholderLink>
+            <Link to="/shop">All footwear</Link>
+            <PlaceholderLink>New arrivals</PlaceholderLink>
+            <PlaceholderLink>Size guide</PlaceholderLink>
+            <PlaceholderLink>Stockists</PlaceholderLink>
           </nav>
         </div>
 
@@ -60,7 +60,7 @@ function Footer() {
 
       <div className="footer-bottom">
         <span>© {currentYear} {siteName}. All rights reserved.</span>
-        <a href="https://freestockfootagearchive.com/neon-light-layer-effect-abstract-night/" target="_blank" rel="noreferrer">Neon loop: Free Stock Footage Archive · CC BY 4.0</a>
+        <span>Built for the next step.</span>
       </div>
     </footer>
   );
