@@ -42,27 +42,20 @@ function Home() {
         <video ref={videoRef} className="hero-video" autoPlay muted loop playsInline preload="metadata" poster="/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg" aria-hidden="true">
           <source src="/wp-content/themes/demo-store-headless/public/energy/video/neon-light-layer.mp4" type="video/mp4" />
         </video>
-        <div className="hero-orbit hero-orbit-one" />
-        <div className="hero-orbit hero-orbit-two" />
         <div className="hero-copy">
-          <p className="signal-label"><span /> ENERGY, REWIRED</p>
-          <h1>Find your<br /><em>frequency.</em></h1>
-          <p className="hero-intro">Clean energy for the hours that need more from you. Big flavor. Zero hesitation.</p>
+          <p className="signal-label"><span /> 180 MG / ZERO SUGAR</p>
+          <h1>Stay<br /><em>charged.</em></h1>
+          <p className="hero-intro">Bright flavor and clean energy for whatever happens next.</p>
           <div className="hero-actions">
-            <Link to="/shop" className="btn btn-primary">Shop the drop <b>↗</b></Link>
-            <a href="#flavors" className="hero-text-link">Pick a flavor <span>↓</span></a>
-          </div>
-          <div className="hero-stat-row">
-            <div><strong>180</strong><span>mg caffeine</span></div>
-            <div><strong>0</strong><span>g sugar</span></div>
-            <div><strong>+ B</strong><span>vitamins</span></div>
+            <Link to="/shop" className="btn btn-primary">Shop energy <b>↗</b></Link>
           </div>
         </div>
         <div className="hero-art" aria-hidden="true">
-          <img src="/wp-content/themes/demo-store-headless/public/energy/photos/afterglow-cans.jpg" alt="" />
-          <span className="hero-badge">NEW<br />DROP<br /><i>01</i></span>
+          <img src="/wp-content/themes/demo-store-headless/public/energy/photos/voltage-can.jpg" alt="" />
         </div>
-        <p className="hero-side-label">PULSE / 2026 / ZERO LIMITS</p>
+        <Link to="/product/voltage-citrus-energy" className="hero-quick-card">
+          <span>01 / CITRUS</span><strong>Voltage</strong><small>180 mg caffeine · 0 g sugar</small>
+        </Link>
       </section>
       <section className="ticker" aria-label="Product benefits"><div>ZERO SUGAR <i>✦</i> BIG ENERGY <i>✦</i> ALL SIGNAL <i>✦</i> ZERO SUGAR <i>✦</i> BIG ENERGY <i>✦</i> ALL SIGNAL <i>✦</i></div></section>
       <section className="flavor-section" id="flavors">

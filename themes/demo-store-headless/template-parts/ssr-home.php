@@ -19,14 +19,13 @@ $theme_uri = get_template_directory_uri();
 <div class="energy-home">
     <section class="pulse-hero">
         <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="<?php echo esc_url($theme_uri . '/public/energy/photos/afterglow-cans.jpg'); ?>" aria-hidden="true"><source src="<?php echo esc_url($theme_uri . '/public/energy/video/neon-light-layer.mp4'); ?>" type="video/mp4"></video>
-        <div class="hero-orbit hero-orbit-one"></div><div class="hero-orbit hero-orbit-two"></div>
         <div class="hero-copy">
-            <p class="signal-label"><span></span> ENERGY, REWIRED</p>
-            <h1>Find your<br><em>frequency.</em></h1>
-            <p class="hero-intro">Clean energy for the hours that need more from you. Big flavor. Zero hesitation.</p>
-            <p><a class="btn btn-primary" href="<?php echo esc_url(home_url('/shop')); ?>">Shop the drop <b>↗</b></a></p>
-            <div class="hero-stat-row"><div><strong>180</strong><span>mg caffeine</span></div><div><strong>0</strong><span>g sugar</span></div><div><strong>+ B</strong><span>vitamins</span></div></div>
+            <p class="signal-label"><span></span> 180 MG / ZERO SUGAR</p>
+            <h1>Stay<br><em>charged.</em></h1>
+            <p class="hero-intro">Bright flavor and clean energy for whatever happens next.</p>
+            <p><a class="btn btn-primary" href="<?php echo esc_url(home_url('/shop')); ?>">Shop energy <b>↗</b></a></p>
         </div>
-        <div class="hero-art"><img src="<?php echo esc_url($theme_uri . '/public/energy/photos/afterglow-cans.jpg'); ?>" alt="PULSE energy drinks"><span class="hero-badge">NEW<br>DROP<br><i>01</i></span></div>
+        <div class="hero-art"><img src="<?php echo esc_url($theme_uri . '/public/energy/photos/voltage-can.jpg'); ?>" alt="PULSE energy drink"></div>
+        <a class="hero-quick-card" href="<?php echo esc_url(home_url('/product/voltage-citrus-energy')); ?>"><span>01 / CITRUS</span><strong>Voltage</strong><small>180 mg caffeine · 0 g sugar</small></a>
     </section>
 </div>

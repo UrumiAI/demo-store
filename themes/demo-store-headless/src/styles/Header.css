@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(8,8,18,.78);
+  background: rgba(223,137,64,.84);
   backdrop-filter: blur(16px);
   border-bottom: var(--border-width) solid var(--color-border-subtle);
 }
@@ -27,7 +27,7 @@
   line-height: 1;
   font-weight: 900;
   letter-spacing: -.1em;
-  color: var(--color-text-primary);
+  color: #fff9f1;
 }
 
 .site-nav {
@@ -42,13 +42,13 @@
   font-weight: 600;
   letter-spacing: var(--track-wider);
   text-transform: uppercase;
-  color: var(--color-text-primary);
+  color: #fff9f1;
   text-decoration: none;
   transition: color var(--duration-base) var(--ease-standard);
 }
 
 .nav-link:hover {
-  color: var(--color-accent);
+  color: #2c1a10;
 }
 
 .cart-link {
