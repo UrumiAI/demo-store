@@ -12,8 +12,8 @@ function Shop() {
   return (
     <>
       <section className="collection-title">
-        <span className="eyebrow">Catalogue</span>
-        <h1>Shop</h1>
+        <span className="eyebrow">Charged to go</span>
+        <h1>All flavors</h1>
         <div className="title-divider" />
       </section>
       <ProductList perPage={24} />

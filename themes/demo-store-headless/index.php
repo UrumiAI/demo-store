@@ -44,20 +44,13 @@
 
     <link rel="canonical" href="<?php echo esc_url($seo_data['canonical_url']); ?>">
 
-    <!-- Brand fonts: EB Garamond (display) + Inter (body) -->
+    <!-- Brand font for the PULSE storefront -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap">
 
     <style id="ssr-styles">
-        #ssr-content {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: #1a1a2e;
-            line-height: 1.6;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-        }
+        #ssr-content { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #f4f2ff; background: #080812; line-height: 1.6; margin: 0; padding: 0; }
         #ssr-content h1 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
         #ssr-content h2 { font-size: 1.4rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
         #ssr-content p  { margin-bottom: 1rem; }

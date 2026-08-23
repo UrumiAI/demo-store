@@ -14,13 +14,18 @@
  * @package Demo_Store_Headless
  */
 
-$site_name = get_bloginfo('name');
-$tagline   = get_bloginfo('description');
+$theme_uri = get_template_directory_uri();
 ?>
-<div class="ssr-section">
-    <h1><?php echo esc_html($site_name); ?></h1>
-    <?php if (!empty($tagline)): ?>
-    <p><?php echo esc_html($tagline); ?></p>
-    <?php endif; ?>
-    <p><a href="<?php echo esc_url(home_url('/shop')); ?>">Browse the shop →</a></p>
+<div class="energy-home">
+    <section class="pulse-hero">
+        <div class="hero-orbit hero-orbit-one"></div><div class="hero-orbit hero-orbit-two"></div>
+        <div class="hero-copy">
+            <p class="signal-label"><span></span> ENERGY, REWIRED</p>
+            <h1>Find your<br><em>frequency.</em></h1>
+            <p class="hero-intro">Clean energy for the hours that need more from you. Big flavor. Zero hesitation.</p>
+            <p><a class="btn btn-primary" href="<?php echo esc_url(home_url('/shop')); ?>">Shop the drop <b>↗</b></a></p>
+            <div class="hero-stat-row"><div><strong>180</strong><span>mg caffeine</span></div><div><strong>0</strong><span>g sugar</span></div><div><strong>+ B</strong><span>vitamins</span></div></div>
+        </div>
+        <div class="hero-art"><img src="<?php echo esc_url($theme_uri . '/public/energy/hero-cans.svg'); ?>" alt="PULSE energy drinks"><span class="hero-badge">NEW<br>DROP<br><i>01</i></span></div>
+    </section>
 </div>

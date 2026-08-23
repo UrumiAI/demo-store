@@ -20,6 +20,13 @@ function formatPrice(prices) {
   return `${symbol}${value}`;
 }
 
+const energyArtwork = {
+  'voltage-citrus-energy': '/wp-content/themes/demo-store-headless/public/energy/can-cyan.svg',
+  'afterglow-cherry-energy': '/wp-content/themes/demo-store-headless/public/energy/can-pink.svg',
+  'ion-rush-lime-energy': '/wp-content/themes/demo-store-headless/public/energy/can-lime.svg',
+  'pulse-energy-starter-pack': '/wp-content/themes/demo-store-headless/public/energy/hero-cans.svg',
+};
+
 function ProductDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -99,8 +106,7 @@ function ProductDetail() {
   }
 
   const images = product.images || [];
-  const currentImage =
-    images[selectedImageIndex]?.src || 'https://via.placeholder.com/800x1000?text=No+Image';
+  const currentImage = energyArtwork[product.slug] || images[selectedImageIndex]?.src || 'https://via.placeholder.com/800x1000?text=No+Image';
 
   return (
     <div className="product-detail-page">

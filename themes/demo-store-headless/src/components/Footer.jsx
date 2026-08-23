@@ -17,7 +17,7 @@ function PlaceholderLink({ children }) {
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-  const siteName = window.wpData?.siteName || 'Salve';
+  const siteName = 'PULSE';
 
   return (
     <footer className="site-footer">
@@ -25,7 +25,7 @@ function Footer() {
         <div className="footer-brand">
           <Link to="/" className="footer-logo">{siteName}</Link>
           <p className="footer-tagline">
-            Considered formulations. Made for the routine, not the ritual.
+            Energy for the in-between. Find your frequency.
           </p>
         </div>
 
@@ -33,9 +33,9 @@ function Footer() {
           <h4>Shop</h4>
           <nav>
             <Link to="/shop">All products</Link>
-            <PlaceholderLink>Skincare</PlaceholderLink>
-            <PlaceholderLink>Body</PlaceholderLink>
-            <PlaceholderLink>Hand &amp; bath</PlaceholderLink>
+            <PlaceholderLink>Variety packs</PlaceholderLink>
+            <PlaceholderLink>Subscription</PlaceholderLink>
+            <PlaceholderLink>Store locator</PlaceholderLink>
           </nav>
         </div>
 
@@ -60,7 +60,7 @@ function Footer() {
 
       <div className="footer-bottom">
         <span>© {currentYear} {siteName}. All rights reserved.</span>
-        <span>Photography sourced from Pexels.</span>
+        <span>Drink loud. Live electric.</span>
       </div>
     </footer>
   );

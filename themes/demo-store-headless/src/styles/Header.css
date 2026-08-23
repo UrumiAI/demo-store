@@ -2,7 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--color-bg-primary);
+  background: rgba(8,8,18,.78);
+  backdrop-filter: blur(16px);
   border-bottom: var(--border-width) solid var(--color-border-subtle);
 }
 
@@ -22,10 +23,10 @@
 
 .logo-text {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 28px;
   line-height: 1;
-  font-weight: 400;
-  letter-spacing: var(--track-snug);
+  font-weight: 900;
+  letter-spacing: -.1em;
   color: var(--color-text-primary);
 }
 
@@ -47,7 +48,7 @@
 }
 
 .nav-link:hover {
-  color: var(--color-text-secondary);
+  color: var(--color-accent);
 }
 
 .cart-link {

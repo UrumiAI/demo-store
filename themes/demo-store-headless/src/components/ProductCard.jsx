@@ -20,8 +20,15 @@ function pickPrice(product) {
   return '';
 }
 
+const energyArtwork = {
+  'voltage-citrus-energy': '/wp-content/themes/demo-store-headless/public/energy/can-cyan.svg',
+  'afterglow-cherry-energy': '/wp-content/themes/demo-store-headless/public/energy/can-pink.svg',
+  'ion-rush-lime-energy': '/wp-content/themes/demo-store-headless/public/energy/can-lime.svg',
+  'pulse-energy-starter-pack': '/wp-content/themes/demo-store-headless/public/energy/hero-cans.svg',
+};
+
 function ProductCard({ product }) {
-  const image = product.images?.[0]?.src || 'https://via.placeholder.com/400x400?text=No+Image';
+  const image = energyArtwork[product.slug] || product.images?.[0]?.src || 'https://via.placeholder.com/400x400?text=No+Image';
   const slug = product.slug || product.id;
 
   return (
