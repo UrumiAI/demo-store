@@ -41,10 +41,27 @@ add_action('after_setup_theme', 'demo_store_setup');
 
 function demo_store_get_assets() {
     $assets_dir = get_template_directory() . '/dist/assets/';
+    $index_file = get_template_directory() . '/dist/index.html';
     $assets = array('js' => '', 'css' => '');
 
     if (!is_dir($assets_dir)) {
         return $assets;
+    }
+
+    // Vite's index is the manifest for the current build. Reading it first
+    // avoids selecting a stale hashed bundle when the filesystem overlay still
+    // exposes assets from a previous build.
+    if (is_readable($index_file)) {
+        $index_html = (string) file_get_contents($index_file);
+        if (preg_match('#/assets/(index-[a-zA-Z0-9_-]+\\.js)#', $index_html, $match)) {
+            $assets['js'] = $match[1];
+        }
+        if (preg_match('#/assets/((?:index|style)-[a-zA-Z0-9_-]+\\.css)#', $index_html, $match)) {
+            $assets['css'] = $match[1];
+        }
+        if (!empty($assets['js']) || !empty($assets['css'])) {
+            return $assets;
+        }
     }
 
     foreach (scandir($assets_dir) as $file) {
