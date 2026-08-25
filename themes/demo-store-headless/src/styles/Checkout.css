@@ -37,7 +37,7 @@
   border-bottom: var(--border-width) solid var(--color-border-subtle);
 }
 
-.checkout-form .form-row {
+.checkout-form .checkout-field-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
@@ -218,5 +218,5 @@
     gap: var(--space-6);
   }
   .order-summary { position: static; }
-  .checkout-form .form-row { grid-template-columns: 1fr; }
+  .checkout-form .checkout-field-row { grid-template-columns: 1fr; }
 }

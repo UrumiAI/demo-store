@@ -194,7 +194,7 @@ function Checkout() {
             <section className="checkout-section">
               <h2>BILLING DETAILS</h2>
 
-              <div className="form-row">
+              <div className="checkout-field-row">
                 <Field label="FIRST NAME *" error={errors.billing_first_name}>
                   <input type="text" value={billing.first_name}
                     onChange={(e) => handleBillingChange('first_name', e.target.value)} />
@@ -226,7 +226,7 @@ function Checkout() {
                   onChange={(e) => handleBillingChange('address_2', e.target.value)} />
               </div>
 
-              <div className="form-row">
+              <div className="checkout-field-row">
                 <Field label="CITY *" error={errors.billing_city}>
                   <input type="text" value={billing.city}
                     onChange={(e) => handleBillingChange('city', e.target.value)} />
@@ -237,7 +237,7 @@ function Checkout() {
                 </Field>
               </div>
 
-              <div className="form-row">
+              <div className="checkout-field-row">
                 <Field label="POSTCODE *" error={errors.billing_postcode}>
                   <input type="text" value={billing.postcode}
                     onChange={(e) => handleBillingChange('postcode', e.target.value)} />
@@ -266,7 +266,7 @@ function Checkout() {
 
               {shipToDifferent && (
                 <>
-                  <div className="form-row">
+                  <div className="checkout-field-row">
                     <Field label="FIRST NAME">
                       <input type="text" value={shipping.first_name}
                         onChange={(e) => handleShippingChange('first_name', e.target.value)} />
@@ -280,7 +280,7 @@ function Checkout() {
                     <input type="text" value={shipping.address_1}
                       onChange={(e) => handleShippingChange('address_1', e.target.value)} />
                   </Field>
-                  <div className="form-row">
+                  <div className="checkout-field-row">
                     <Field label="CITY">
                       <input type="text" value={shipping.city}
                         onChange={(e) => handleShippingChange('city', e.target.value)} />
