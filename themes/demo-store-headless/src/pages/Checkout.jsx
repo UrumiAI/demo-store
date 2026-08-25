@@ -22,7 +22,7 @@ function emptyAddress() {
     city: '',
     state: '',
     postcode: '',
-    country: 'IN',
+    country: 'US',
     email: '',
     phone: '',
   };
@@ -36,9 +36,34 @@ function formatMinor(amount, totals) {
   return `${symbol}${value}`;
 }
 
+function paymentMethodLabel(method) {
+  const labels = {
+    bacs: 'Direct bank transfer',
+    cod: 'Cash on delivery',
+    cheque: 'Check payments',
+    paypal: 'PayPal',
+  };
+  return labels[method] || method.replace(/[-_]+/g, ' ');
+}
+
+function hasShippingRates(cart) {
+  return (cart?.shipping_rates || []).some(
+    (shippingPackage) => (shippingPackage.shipping_rates || []).length > 0
+  );
+}
+
+function shippingLabel(cart, totals) {
+  if (cart?.needs_shipping && !hasShippingRates(cart)) {
+    return 'Calculated at checkout';
+  }
+  return Number(totals.total_shipping) === 0
+    ? 'Free'
+    : formatMinor(totals.total_shipping, totals);
+}
+
 function Checkout() {
   const navigate = useNavigate();
-  const { items, totals, loading: cartLoading, refreshCart } = useCart();
+  const { cart, items, totals, loading: cartLoading, refreshCart, updateCustomer } = useCart();
 
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -96,7 +121,7 @@ function Checkout() {
     billing_address: billing,
     shipping_address: shipToDifferent ? shipping : billing,
     payment_method: paymentMethod,
-    customer_note: customerNote,
+    order_notes: customerNote,
   }), [billing, shipping, shipToDifferent, paymentMethod, customerNote]);
 
   const handleSubmit = async (e) => {
@@ -111,7 +136,29 @@ function Checkout() {
     setSubmitting(true);
     setErrors({});
     try {
-      const order = await submitCheckout(payload);
+      const updatedCart = await updateCustomer({
+        billing_address: billing,
+        shipping_address: shipToDifferent ? shipping : billing,
+      });
+      const updatedPaymentMethods = updatedCart?.payment_methods || [];
+      const selectedPaymentMethod = updatedPaymentMethods.includes(paymentMethod)
+        ? paymentMethod
+        : updatedPaymentMethods[0];
+
+      setPaymentMethods(updatedPaymentMethods);
+      setPaymentMethod(selectedPaymentMethod || '');
+
+      if (updatedCart?.needs_shipping && !hasShippingRates(updatedCart)) {
+        throw new Error('No delivery option is available for this address.');
+      }
+      if (!selectedPaymentMethod) {
+        throw new Error('No payment method is available for this order.');
+      }
+
+      const order = await submitCheckout({
+        ...payload,
+        payment_method: selectedPaymentMethod,
+      });
       await refreshCart();
       const orderKey = order?.order_key ? `?key=${encodeURIComponent(order.order_key)}` : '';
       navigate(`/order-confirmation/${order.order_id}${orderKey}`);
@@ -284,9 +331,7 @@ function Checkout() {
                 <div className="total-line">
                   <span>Shipping</span>
                   <span>
-                    {Number(totals.total_shipping) === 0
-                      ? 'Free'
-                      : formatMinor(totals.total_shipping, totals)}
+                    {shippingLabel(cart, totals)}
                   </span>
                 </div>
                 <div className="total-line grand-total">
@@ -309,7 +354,7 @@ function Checkout() {
                       checked={paymentMethod === method}
                       onChange={(e) => setPaymentMethod(e.target.value)}
                     />
-                    <span>{method}</span>
+                    <span>{paymentMethodLabel(method)}</span>
                   </label>
                 ))}
                 {errors.payment_method && (

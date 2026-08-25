@@ -13,6 +13,7 @@ import {
   updateCartItem,
   removeCartItem,
   clearCartItems,
+  updateCartCustomer,
 } from '../api/cart';
 
 const CartContext = createContext(null);
@@ -97,6 +98,10 @@ export function CartProvider({ children }) {
     });
   }, [wrapMutation]);
 
+  const updateCustomer = useCallback((customer) => {
+    return wrapMutation(() => updateCartCustomer(customer));
+  }, [wrapMutation]);
+
   const value = useMemo(() => ({
     cart,
     items: cart.items,
@@ -110,7 +115,8 @@ export function CartProvider({ children }) {
     updateQuantity,
     removeFromCart,
     clearCart,
-  }), [cart, loading, mutating, error, refreshCart, addToCart, updateQuantity, removeFromCart, clearCart]);
+    updateCustomer,
+  }), [cart, loading, mutating, error, refreshCart, addToCart, updateQuantity, removeFromCart, clearCart, updateCustomer]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

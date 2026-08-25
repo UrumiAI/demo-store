@@ -53,3 +53,11 @@ export function clearCartItems() {
   if (isDemo) return Promise.resolve(clearDemoCart());
   return storeApiRequest('cart/items', { method: 'DELETE' });
 }
+
+export function updateCartCustomer({ billing_address, shipping_address }) {
+  if (isDemo) return Promise.resolve(getDemoCart());
+  return storeApiRequest('cart/update-customer', {
+    method: 'POST',
+    body: { billing_address, shipping_address },
+  });
+}

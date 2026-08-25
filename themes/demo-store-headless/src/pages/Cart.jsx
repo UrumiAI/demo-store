@@ -17,9 +17,22 @@ function formatMinor(amount, totals) {
   return `${symbol}${value}`;
 }
 
+function shippingLabel(cart, totals) {
+  const hasShippingRates = (cart?.shipping_rates || []).some(
+    (shippingPackage) => (shippingPackage.shipping_rates || []).length > 0
+  );
+
+  if (cart?.needs_shipping && !hasShippingRates) {
+    return 'Calculated at checkout';
+  }
+  return Number(totals.total_shipping) === 0
+    ? 'Free'
+    : formatMinor(totals.total_shipping, totals);
+}
+
 function Cart() {
   const navigate = useNavigate();
-  const { items, totals, loading, mutating, error, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { cart, items, totals, loading, mutating, error, updateQuantity, removeFromCart, clearCart } = useCart();
 
   if (loading) {
     return (
@@ -123,9 +136,7 @@ function Cart() {
             <div className="summary-line">
               <span>Shipping</span>
               <span>
-                {Number(totals.total_shipping) === 0
-                  ? 'Free'
-                  : formatMinor(totals.total_shipping, totals)}
+                {shippingLabel(cart, totals)}
               </span>
             </div>
 

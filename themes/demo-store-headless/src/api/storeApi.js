@@ -16,12 +16,27 @@
  */
 
 const CART_TOKEN_STORAGE_KEY = 'demo-store-cart-token';
+let currentCartToken = null;
 
 function getStoreApiRoot() {
-  return window.wpData?.storeApiRoot || `${window.location.origin}/wp-json/wc/store/v1/`;
+  const configuredRoot = window.wpData?.storeApiRoot;
+  if (!configuredRoot) {
+    return `${window.location.origin}/wp-json/wc/store/v1/`;
+  }
+
+  // Preview environments can serve the storefront from a different hostname
+  // than WordPress's configured canonical URL. Keep Store API requests on the
+  // shopper's current origin so browser session cookies and cart tokens stay
+  // attached to the same storefront session.
+  const configuredUrl = new URL(configuredRoot, window.location.origin);
+  return new URL(
+    `${configuredUrl.pathname}${configuredUrl.search}`,
+    window.location.origin
+  ).toString();
 }
 
 function getStoredCartToken() {
+  if (currentCartToken) return currentCartToken;
   try {
     return localStorage.getItem(CART_TOKEN_STORAGE_KEY) || null;
   } catch {
@@ -31,6 +46,7 @@ function getStoredCartToken() {
 
 function storeCartToken(token) {
   if (!token) return;
+  currentCartToken = token;
   try {
     localStorage.setItem(CART_TOKEN_STORAGE_KEY, token);
   } catch {
@@ -41,6 +57,7 @@ function storeCartToken(token) {
 let currentNonce = window.wpData?.nonce || '';
 
 export function clearStoredCartToken() {
+  currentCartToken = null;
   try {
     localStorage.removeItem(CART_TOKEN_STORAGE_KEY);
   } catch {
