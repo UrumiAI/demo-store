@@ -232,26 +232,6 @@
 .place-order-btn:hover { background: rgba(26,22,18,0.85); }
 .place-order-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.checkout-hosted-payment {
-  max-width: 560px;
-}
-
-.hosted-payment-card {
-  position: static;
-  text-align: center;
-}
-
-.hosted-payment-card p {
-  margin: 0;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-}
-
-.hosted-payment-card .place-order-btn {
-  text-align: center;
-  text-decoration: none;
-}
-
 @media (max-width: 768px) {
   .checkout-container {
     grid-template-columns: 1fr;
