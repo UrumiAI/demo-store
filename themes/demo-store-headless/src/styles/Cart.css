@@ -27,8 +27,18 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-5);
-  padding: var(--space-8) 0;
-  color: var(--color-text-secondary);
+  padding: var(--space-7) 0 var(--space-8);
+}
+
+.empty-cart p {
+  color: var(--color-text-primary);
+  font-size: var(--type-body-lg-size);
+}
+
+.empty-cart .continue-shopping-btn {
+  width: auto;
+  min-width: 220px;
+  margin-top: 0;
 }
 
 .cart-container {
