@@ -93,7 +93,7 @@ function OrderConfirmation() {
     minor_unit: orderTotals.currency_minor_unit ?? 2,
     symbol: orderTotals.currency_symbol || '',
   };
-  const depositSimulation = getDepositSimulation(order) || getDepositSimulation(order.__experimentalCart);
+  const depositSimulation = order.deposit_simulation || getDepositSimulation(order.__experimentalCart?.items);
   const billing = order.billing_address || {};
   const shipping = order.shipping_address || billing;
 

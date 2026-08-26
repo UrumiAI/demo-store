@@ -34,7 +34,7 @@ function shippingLabel(cart, totals) {
 function Cart() {
   const navigate = useNavigate();
   const { cart, items, totals, loading, mutating, error, updateQuantity, removeFromCart, clearCart } = useCart();
-  const depositSimulation = getDepositSimulation(cart);
+  const depositSimulation = getDepositSimulation(items);
 
   if (loading) {
     return (
@@ -77,7 +77,7 @@ function Cart() {
           {items.map((item) => {
             const image = item.images?.[0]?.src || 'https://via.placeholder.com/150x200?text=No+Image';
             const lineTotal = item.totals?.line_total;
-            const itemDeposit = getDepositSimulation(item);
+            const itemDeposit = getDepositSimulation([item]);
 
             return (
               <div key={item.key} className="cart-item">

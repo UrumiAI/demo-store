@@ -65,7 +65,7 @@ function shippingLabel(cart, totals) {
 function Checkout() {
   const navigate = useNavigate();
   const { cart, items, totals, loading: cartLoading, refreshCart, updateCustomer } = useCart();
-  const depositSimulation = getDepositSimulation(cart);
+  const depositSimulation = getDepositSimulation(items);
 
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -166,13 +166,14 @@ function Checkout() {
         throw new Error('Your order was placed, but its confirmation details were unavailable.');
       }
 
-      const orderKey = order?.order_key ? `?key=${encodeURIComponent(order.order_key)}` : '';
+      const orderWithDeposit = depositSimulation ? { ...order, deposit_simulation: depositSimulation } : order;
+      const orderKey = orderWithDeposit?.order_key ? `?key=${encodeURIComponent(orderWithDeposit.order_key)}` : '';
       try {
-        sessionStorage.setItem(`demo-store-order-${orderId}`, JSON.stringify(order));
+        sessionStorage.setItem(`demo-store-order-${orderId}`, JSON.stringify(orderWithDeposit));
       } catch {
         // The confirmation route still receives the order through navigation state.
       }
-      navigate(`/order-confirmation/${orderId}${orderKey}`, { state: { order } });
+      navigate(`/order-confirmation/${orderId}${orderKey}`, { state: { order: orderWithDeposit } });
       refreshCart().catch((refreshError) => {
         console.error('Failed to refresh the cart after checkout', refreshError);
       });

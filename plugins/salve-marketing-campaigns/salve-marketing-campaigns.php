@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Salve Marketing Campaigns
  * Description: Create editable marketing email campaigns, preview them, send a test, and launch consent-based batches with unsubscribe support.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Salve
  * License: GPL-2.0-or-later
  * Text Domain: salve-marketing-campaigns
@@ -520,3 +520,146 @@ final class Salve_Marketing_Campaigns {
 }
 
 new Salve_Marketing_Campaigns();
+
+/**
+ * A deliberately non-payment deposit record for the one product requested by
+ * the merchant. Cash on Delivery cannot collect funds at checkout, so this
+ * records the split transparently and never represents it as an online charge.
+ */
+final class Salve_Deposit_Simulation {
+	const PRODUCT_SKU        = 'ORB-OXIDE-01';
+	const CART_FULL_PRICE    = 'salve_deposit_full_unit_price';
+	const ITEM_FLAG          = '_salve_deposit_simulation';
+	const ITEM_BALANCE       = '_salve_deposit_balance_due';
+	const ORDER_FLAG         = '_salve_deposit_simulation';
+	const ORDER_DEPOSIT      = '_salve_deposit_due_now';
+	const ORDER_BALANCE      = '_salve_deposit_balance_due';
+	const ORDER_BALANCE_DUE  = '_salve_deposit_balance_status';
+
+	public function __construct() {
+		add_action( 'woocommerce_before_calculate_totals', array( $this, 'apply_deposit_price' ), 100 );
+		add_filter( 'woocommerce_available_payment_gateways', array( $this, 'limit_deposit_orders_to_cod' ) );
+		add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'add_deposit_line_item_meta' ), 10, 4 );
+		add_action( 'woocommerce_checkout_order_created', array( $this, 'record_deposit_order_meta' ) );
+		add_action( 'init', array( $this, 'register_shipped_status' ) );
+		add_filter( 'wc_order_statuses', array( $this, 'add_shipped_status' ) );
+		add_action( 'woocommerce_order_status_shipped', array( $this, 'mark_balance_due_on_shipment' ) );
+		add_action( 'woocommerce_admin_order_data_after_order_details', array( $this, 'render_order_deposit_details' ) );
+	}
+
+	public function apply_deposit_price( $cart ) {
+		if ( is_admin() && ! wp_doing_ajax() ) {
+			return;
+		}
+		foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
+			if ( empty( $cart_item['data'] ) || ! $this->is_deposit_product( $cart_item['data'] ) ) {
+				continue;
+			}
+			$full_price = isset( $cart_item[ self::CART_FULL_PRICE ] ) ? (float) $cart_item[ self::CART_FULL_PRICE ] : (float) $cart_item['data']->get_price( 'edit' );
+			if ( $full_price <= 0 ) {
+				continue;
+			}
+			$cart->cart_contents[ $cart_item_key ][ self::CART_FULL_PRICE ] = $full_price;
+			$cart->cart_contents[ $cart_item_key ]['data']->set_price( wc_format_decimal( $full_price / 2 ) );
+		}
+	}
+
+	public function limit_deposit_orders_to_cod( $gateways ) {
+		if ( ! $this->cart_has_deposit_product() ) {
+			return $gateways;
+		}
+		return isset( $gateways['cod'] ) ? array( 'cod' => $gateways['cod'] ) : array();
+	}
+
+	public function add_deposit_line_item_meta( $item, $cart_item_key, $values, $order ) {
+		if ( empty( $values['data'] ) || ! $this->is_deposit_product( $values['data'] ) ) {
+			return;
+		}
+		$amount = (float) $item->get_total() + (float) $item->get_total_tax();
+		$item->add_meta_data( self::ITEM_FLAG, 'yes', true );
+		$item->add_meta_data( self::ITEM_BALANCE, wc_format_decimal( $amount ), true );
+		$item->add_meta_data( __( 'Deposit simulation', 'salve-marketing-campaigns' ), __( '50% by Cash on Delivery; remaining 50% recorded for manual collection after shipment.', 'salve-marketing-campaigns' ), true );
+	}
+
+	public function record_deposit_order_meta( $order ) {
+		$deposit_due = 0.0;
+		$balance_due = 0.0;
+		foreach ( $order->get_items( 'line_item' ) as $item ) {
+			if ( 'yes' !== $item->get_meta( self::ITEM_FLAG, true ) ) {
+				continue;
+			}
+			$deposit_due += (float) $item->get_total() + (float) $item->get_total_tax();
+			$balance_due += (float) $item->get_meta( self::ITEM_BALANCE, true );
+		}
+		if ( $deposit_due <= 0 ) {
+			return;
+		}
+		$order->update_meta_data( self::ORDER_FLAG, 'yes' );
+		$order->update_meta_data( self::ORDER_DEPOSIT, wc_format_decimal( $deposit_due ) );
+		$order->update_meta_data( self::ORDER_BALANCE, wc_format_decimal( $balance_due ) );
+		$order->update_meta_data( self::ORDER_BALANCE_DUE, 'pending_shipment' );
+		$order->add_order_note( sprintf( __( 'Deposit simulation: %1$s is due by Cash on Delivery. A separate %2$s balance is recorded for manual collection after shipment. No online payment was collected.', 'salve-marketing-campaigns' ), wp_strip_all_tags( wc_price( $deposit_due, array( 'currency' => $order->get_currency() ) ) ), wp_strip_all_tags( wc_price( $balance_due, array( 'currency' => $order->get_currency() ) ) ) ) );
+		$order->save();
+	}
+
+	public function register_shipped_status() {
+		register_post_status( 'wc-shipped', array( 'label' => _x( 'Shipped', 'Order status', 'salve-marketing-campaigns' ), 'public' => true, 'exclude_from_search' => false, 'show_in_admin_all_list' => true, 'show_in_admin_status_list' => true, 'label_count' => _n_noop( 'Shipped <span class="count">(%s)</span>', 'Shipped <span class="count">(%s)</span>', 'salve-marketing-campaigns' ) ) );
+	}
+
+	public function add_shipped_status( $statuses ) {
+		$updated = array();
+		foreach ( $statuses as $status => $label ) {
+			$updated[ $status ] = $label;
+			if ( 'wc-processing' === $status ) {
+				$updated['wc-shipped'] = _x( 'Shipped', 'Order status', 'salve-marketing-campaigns' );
+			}
+		}
+		return $updated;
+	}
+
+	public function mark_balance_due_on_shipment( $order_id ) {
+		$order = wc_get_order( $order_id );
+		if ( ! $order || 'yes' !== $order->get_meta( self::ORDER_FLAG, true ) || 'due' === $order->get_meta( self::ORDER_BALANCE_DUE, true ) ) {
+			return;
+		}
+		$balance_due = (float) $order->get_meta( self::ORDER_BALANCE, true );
+		$order->update_meta_data( self::ORDER_BALANCE_DUE, 'due' );
+		$order->add_order_note( sprintf( __( 'Your shipment is on its way. The remaining %s balance is due for manual collection. This is a deposit simulation; no automatic payment has been taken.', 'salve-marketing-campaigns' ), wp_strip_all_tags( wc_price( $balance_due, array( 'currency' => $order->get_currency() ) ) ) ), true );
+		$order->save();
+	}
+
+	public function render_order_deposit_details( $order ) {
+		if ( ! $order instanceof WC_Order || 'yes' !== $order->get_meta( self::ORDER_FLAG, true ) ) {
+			return;
+		}
+		$deposit = (float) $order->get_meta( self::ORDER_DEPOSIT, true );
+		$balance = (float) $order->get_meta( self::ORDER_BALANCE, true );
+		$status  = $order->get_meta( self::ORDER_BALANCE_DUE, true );
+		?>
+		<div class="order_data_column" style="clear:both;float:none;width:auto;margin-top:18px;padding:14px;background:#f6f7f7;border-left:4px solid #2271b1">
+			<h3 style="margin-top:0"><?php esc_html_e( '50% deposit simulation', 'salve-marketing-campaigns' ); ?></h3>
+			<p><?php printf( esc_html__( 'Cash on Delivery amount: %s', 'salve-marketing-campaigns' ), wp_kses_post( wc_price( $deposit, array( 'currency' => $order->get_currency() ) ) ) ); ?><br>
+			<?php printf( esc_html__( 'Manual balance: %s', 'salve-marketing-campaigns' ), wp_kses_post( wc_price( $balance, array( 'currency' => $order->get_currency() ) ) ) ); ?><br>
+			<?php echo 'due' === $status ? esc_html__( 'Balance status: due after shipment', 'salve-marketing-campaigns' ) : esc_html__( 'Balance status: pending shipment', 'salve-marketing-campaigns' ); ?></p>
+		</div>
+		<?php
+	}
+
+	private function cart_has_deposit_product() {
+		if ( ! WC()->cart ) {
+			return false;
+		}
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			if ( ! empty( $cart_item['data'] ) && $this->is_deposit_product( $cart_item['data'] ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private function is_deposit_product( $product ) {
+		return $product instanceof WC_Product && self::PRODUCT_SKU === $product->get_sku();
+	}
+}
+
+new Salve_Deposit_Simulation();
