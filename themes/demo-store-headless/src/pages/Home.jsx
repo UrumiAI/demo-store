@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 import ProductList from '../components/ProductList';
 import '../styles/Home.css';
 
-const HERO_VIDEO_URL = 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Eyeshadow.webm';
-const HERO_VIDEO_SOURCE = 'https://commons.wikimedia.org/wiki/File:Eyeshadow.webm';
+const HERO_VIDEO_URL = 'https://upload.wikimedia.org/wikipedia/commons/3/30/Cosmetics.webmhd.webm';
+const HERO_VIDEO_SOURCE = 'https://commons.wikimedia.org/wiki/File:Cosmetics.webmhd.webm';
 
 function Home() {
   const siteName = window.wpData?.siteName || 'Salve';
@@ -37,7 +37,7 @@ function Home() {
           <Link to="/shop" className="btn home-hero-cta">Shop the collection</Link>
         </div>
         <p className="home-hero-attribution">
-          Background film: <a href={HERO_VIDEO_SOURCE}>Eyeshadow</a> by Oparah jas, CC BY-SA 4.0
+          Background film: <a href={HERO_VIDEO_SOURCE}>Cosmetics</a> by Sha’Boris, CC BY-SA 4.0
         </p>
       </section>
       <ProductList perPage={8} />
