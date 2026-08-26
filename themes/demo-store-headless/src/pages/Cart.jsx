@@ -8,6 +8,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { getDepositSimulation } from '../utils/depositSimulation';
 import '../styles/Cart.css';
 
 function formatMinor(amount, totals) {
@@ -33,6 +34,7 @@ function shippingLabel(cart, totals) {
 function Cart() {
   const navigate = useNavigate();
   const { cart, items, totals, loading, mutating, error, updateQuantity, removeFromCart, clearCart } = useCart();
+  const depositSimulation = getDepositSimulation(cart);
 
   if (loading) {
     return (
@@ -75,6 +77,7 @@ function Cart() {
           {items.map((item) => {
             const image = item.images?.[0]?.src || 'https://via.placeholder.com/150x200?text=No+Image';
             const lineTotal = item.totals?.line_total;
+            const itemDeposit = getDepositSimulation(item);
 
             return (
               <div key={item.key} className="cart-item">
@@ -85,6 +88,11 @@ function Cart() {
                 <div className="cart-item-details">
                   <h3 className="cart-item-name">{item.name}</h3>
                   <p className="cart-item-price">{formatMinor(item.prices?.price, totals)}</p>
+                  {itemDeposit && (
+                    <p className="deposit-product-note">
+                      50% deposit simulation: {formatMinor(itemDeposit.full_unit_price, totals)} full price
+                    </p>
+                  )}
 
                   <div className="cart-item-quantity">
                     <label>QUANTITY</label>
@@ -146,6 +154,13 @@ function Cart() {
               <span>Total</span>
               <span>{formatMinor(totals.total_price, totals)}</span>
             </div>
+
+            {depositSimulation && (
+              <div className="deposit-simulation-note">
+                <strong>50% deposit simulation</strong>
+                <p>{formatMinor(depositSimulation.deposit_due_now, totals)} is due by Cash on Delivery. A separate {formatMinor(depositSimulation.balance_due, totals)} balance is recorded for manual collection after shipment. No online payment is taken.</p>
+              </div>
+            )}
 
             <button
               className="checkout-btn"

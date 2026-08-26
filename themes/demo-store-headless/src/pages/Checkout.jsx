@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { getCheckout, submitCheckout, validateCheckoutForm } from '../api/checkout';
+import { getDepositSimulation } from '../utils/depositSimulation';
 import '../styles/Checkout.css';
 
 function emptyAddress() {
@@ -64,6 +65,7 @@ function shippingLabel(cart, totals) {
 function Checkout() {
   const navigate = useNavigate();
   const { cart, items, totals, loading: cartLoading, refreshCart, updateCustomer } = useCart();
+  const depositSimulation = getDepositSimulation(cart);
 
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -351,6 +353,13 @@ function Checkout() {
                   <span>{formatMinor(totals.total_price, totals)}</span>
                 </div>
               </div>
+
+              {depositSimulation && (
+                <div className="deposit-simulation-note">
+                  <strong>50% deposit simulation</strong>
+                  <p>{formatMinor(depositSimulation.deposit_due_now, totals)} is due by Cash on Delivery. A separate {formatMinor(depositSimulation.balance_due, totals)} balance is recorded for manual collection after shipment. No online payment is taken.</p>
+                </div>
+              )}
 
               <div className="payment-methods">
                 <h3>PAYMENT METHOD</h3>

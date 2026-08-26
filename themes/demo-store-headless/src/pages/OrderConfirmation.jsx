@@ -9,6 +9,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { getOrder } from '../api/checkout';
+import { getDepositSimulation } from '../utils/depositSimulation';
 import '../styles/OrderConfirmation.css';
 
 function formatAmount(amount, currency) {
@@ -87,10 +88,12 @@ function OrderConfirmation() {
     );
   }
 
+  const orderTotals = order.totals || order.__experimentalCart?.totals || {};
   const currency = {
-    minor_unit: order.totals?.currency_minor_unit ?? 2,
-    symbol: order.totals?.currency_symbol || '',
+    minor_unit: orderTotals.currency_minor_unit ?? 2,
+    symbol: orderTotals.currency_symbol || '',
   };
+  const depositSimulation = getDepositSimulation(order) || getDepositSimulation(order.__experimentalCart);
   const billing = order.billing_address || {};
   const shipping = order.shipping_address || billing;
 
@@ -106,6 +109,13 @@ function OrderConfirmation() {
         <div className="confirmation-message">
           <p>Your order has been received. We'll send a confirmation email shortly.</p>
         </div>
+
+        {depositSimulation && (
+          <div className="confirmation-deposit-note">
+            <strong>50% deposit simulation</strong>
+            <p>{formatAmount(depositSimulation.deposit_due_now, currency)} is due by Cash on Delivery. The remaining {formatAmount(depositSimulation.balance_due, currency)} is recorded for manual collection after shipment. No online payment was taken.</p>
+          </div>
+        )}
 
         <div className="order-details-grid">
           <div className="detail-section">

@@ -161,6 +161,26 @@
   margin-top: var(--space-2);
 }
 
+.deposit-simulation-note {
+  margin: 0 0 var(--space-5);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--color-border-subtle);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  font-size: var(--type-caption-size);
+  line-height: 1.55;
+}
+
+.deposit-simulation-note strong {
+  display: block;
+  color: var(--color-text-primary);
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--track-widest);
+  text-transform: uppercase;
+}
+
+.deposit-simulation-note p { margin-top: var(--space-2); }
+
 .payment-methods {
   margin: var(--space-5) 0;
   padding-top: var(--space-4);
