@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Salve Marketing Campaigns
  * Description: Create editable marketing email campaigns, preview them, send a test, and launch consent-based batches with unsubscribe support.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Salve
  * License: GPL-2.0-or-later
  * Text Domain: salve-marketing-campaigns
@@ -20,6 +20,8 @@ final class Salve_Marketing_Campaigns {
 	const META_MESSAGE    = '_salve_campaign_message';
 	const META_CTA_LABEL  = '_salve_campaign_cta_label';
 	const META_CTA_URL    = '_salve_campaign_cta_url';
+	const META_PRODUCT_ONE = '_salve_campaign_product_one';
+	const META_PRODUCT_TWO = '_salve_campaign_product_two';
 	const META_OFFSET     = '_salve_campaign_offset';
 	const META_SENT       = '_salve_campaign_sent';
 	const META_FAILED     = '_salve_campaign_failed';
@@ -77,8 +79,9 @@ final class Salve_Marketing_Campaigns {
 	}
 
 	public function render_campaign_meta_box( $post ) {
-		$fields  = $this->campaign_fields( $post->ID );
-		$status  = get_post_meta( $post->ID, self::META_STATUS, true ) ?: 'draft';
+		$fields   = $this->campaign_fields( $post->ID );
+		$status   = get_post_meta( $post->ID, self::META_STATUS, true ) ?: 'draft';
+		$products = $this->available_products();
 		wp_nonce_field( 'salve_campaign_details', 'salve_campaign_details_nonce' );
 		?>
 		<p><?php esc_html_e( 'This campaign uses the Salve native HTML email design. Edit the content fields below; the launch screen shows the exact email preview.', 'salve-marketing-campaigns' ); ?></p>
@@ -89,6 +92,26 @@ final class Salve_Marketing_Campaigns {
 			<tr><th><label for="salve_campaign_message"><?php esc_html_e( 'Message', 'salve-marketing-campaigns' ); ?></label></th><td><textarea class="large-text" rows="7" id="salve_campaign_message" name="salve_campaign_message"><?php echo esc_textarea( $fields['message'] ); ?></textarea></td></tr>
 			<tr><th><label for="salve_campaign_cta_label"><?php esc_html_e( 'Button label', 'salve-marketing-campaigns' ); ?></label></th><td><input class="regular-text" type="text" id="salve_campaign_cta_label" name="salve_campaign_cta_label" value="<?php echo esc_attr( $fields['cta_label'] ); ?>"></td></tr>
 			<tr><th><label for="salve_campaign_cta_url"><?php esc_html_e( 'Button URL', 'salve-marketing-campaigns' ); ?></label></th><td><input class="large-text code" type="url" id="salve_campaign_cta_url" name="salve_campaign_cta_url" value="<?php echo esc_attr( $fields['cta_url'] ); ?>"></td></tr>
+			<tr>
+				<th><?php esc_html_e( 'Featured products', 'salve-marketing-campaigns' ); ?></th>
+				<td>
+					<p class="description"><?php esc_html_e( 'These appear as image, price, and shop-link cards in the email. Leave either field on “Use newest product” to fill it automatically from your catalog.', 'salve-marketing-campaigns' ); ?></p>
+					<p><label for="salve_campaign_product_one"><?php esc_html_e( 'Product one', 'salve-marketing-campaigns' ); ?></label><br>
+					<select id="salve_campaign_product_one" name="salve_campaign_product_one">
+						<option value="0" <?php selected( 0, absint( $fields['product_one'] ) ); ?>><?php esc_html_e( 'Use newest product', 'salve-marketing-campaigns' ); ?></option>
+						<?php foreach ( $products as $product ) : ?>
+							<option value="<?php echo esc_attr( $product->ID ); ?>" <?php selected( $product->ID, absint( $fields['product_one'] ) ); ?>><?php echo esc_html( get_the_title( $product ) ); ?></option>
+						<?php endforeach; ?>
+					</select></p>
+					<p><label for="salve_campaign_product_two"><?php esc_html_e( 'Product two', 'salve-marketing-campaigns' ); ?></label><br>
+					<select id="salve_campaign_product_two" name="salve_campaign_product_two">
+						<option value="0" <?php selected( 0, absint( $fields['product_two'] ) ); ?>><?php esc_html_e( 'Use newest product', 'salve-marketing-campaigns' ); ?></option>
+						<?php foreach ( $products as $product ) : ?>
+							<option value="<?php echo esc_attr( $product->ID ); ?>" <?php selected( $product->ID, absint( $fields['product_two'] ) ); ?>><?php echo esc_html( get_the_title( $product ) ); ?></option>
+						<?php endforeach; ?>
+					</select></p>
+				</td>
+			</tr>
 		</table>
 		<p class="description"><?php esc_html_e( 'Personalisation fields: {{first_name}} and {{site_name}}.', 'salve-marketing-campaigns' ); ?></p>
 		<p><strong><?php esc_html_e( 'Status:', 'salve-marketing-campaigns' ); ?></strong> <?php echo esc_html( ucfirst( $status ) ); ?></p>
@@ -112,6 +135,8 @@ final class Salve_Marketing_Campaigns {
 			'message'   => array( self::META_MESSAGE, 'sanitize_textarea_field' ),
 			'cta_label' => array( self::META_CTA_LABEL, 'sanitize_text_field' ),
 			'cta_url'   => array( self::META_CTA_URL, 'esc_url_raw' ),
+			'product_one' => array( self::META_PRODUCT_ONE, 'absint' ),
+			'product_two' => array( self::META_PRODUCT_TWO, 'absint' ),
 		);
 		foreach ( $fields as $field => $settings ) {
 			$key = 'salve_campaign_' . $field;
@@ -289,7 +314,8 @@ final class Salve_Marketing_Campaigns {
 		$cta_url     = esc_url( $this->replace_tokens( $fields['cta_url'], $recipient ) );
 		$site_name   = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
 		$unsubscribe = $recipient->ID ? $this->unsubscribe_url( $recipient ) : '#';
-		return '<!doctype html><html><body style="margin:0;background:#f7f3ed;color:#1a1612;font-family:Arial,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:32px 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;margin:0 auto;background:#ffffff"><tr><td style="padding:42px 44px 30px;background:#1a1612;color:#fbf8f3"><div style="font-family:Georgia,serif;font-size:34px;letter-spacing:-1px">' . esc_html( $site_name ) . '</div><div style="margin-top:18px;color:#d9d2c8;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase">' . $eyebrow . '</div><h1 style="margin:10px 0 0;color:#fbf8f3;font-family:Georgia,serif;font-size:42px;font-weight:normal;line-height:1.08">' . $heading . '</h1></td></tr><tr><td style="padding:42px 44px 20px;font-size:16px;line-height:1.7">' . $message . '</td></tr><tr><td style="padding:12px 44px 44px"><a href="' . $cta_url . '" style="display:inline-block;background:#1a1612;color:#fbf8f3;padding:14px 24px;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-decoration:none;text-transform:uppercase">' . $cta_label . '</a></td></tr><tr><td style="padding:24px 44px;background:#f0ebe3;color:#6b635a;font-size:12px;line-height:1.5">You are receiving this because you opted in to marketing from ' . esc_html( $site_name ) . '. <a style="color:#6b635a" href="' . esc_url( $unsubscribe ) . '">Unsubscribe</a></td></tr></table></td></tr></table></body></html>';
+		$product_cards = $this->render_product_cards( $campaign->ID );
+		return '<!doctype html><html><body style="margin:0;background:#f7f3ed;color:#1a1612;font-family:Arial,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:32px 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;margin:0 auto;background:#ffffff"><tr><td style="padding:42px 44px 30px;background:#1a1612;color:#fbf8f3"><div style="font-family:Georgia,serif;font-size:34px;letter-spacing:-1px">' . esc_html( $site_name ) . '</div><div style="margin-top:18px;color:#d9d2c8;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase">' . $eyebrow . '</div><h1 style="margin:10px 0 0;color:#fbf8f3;font-family:Georgia,serif;font-size:42px;font-weight:normal;line-height:1.08">' . $heading . '</h1></td></tr><tr><td style="padding:42px 44px 20px;font-size:16px;line-height:1.7">' . $message . '</td></tr>' . $product_cards . '<tr><td style="padding:12px 44px 44px"><a href="' . $cta_url . '" style="display:inline-block;background:#1a1612;color:#fbf8f3;padding:14px 24px;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-decoration:none;text-transform:uppercase">' . $cta_label . '</a></td></tr><tr><td style="padding:24px 44px;background:#f0ebe3;color:#6b635a;font-size:12px;line-height:1.5">You are receiving this because you opted in to marketing from ' . esc_html( $site_name ) . '. <a style="color:#6b635a" href="' . esc_url( $unsubscribe ) . '">Unsubscribe</a></td></tr></table></td></tr></table></body></html>';
 	}
 
 	private function campaign_fields( $campaign_id ) {
@@ -300,6 +326,8 @@ final class Salve_Marketing_Campaigns {
 			'message'   => "Hello {{first_name}},\n\nWe have something considered especially for you.",
 			'cta_label' => 'Shop the collection',
 			'cta_url'   => home_url( '/shop' ),
+			'product_one' => 0,
+			'product_two' => 0,
 		);
 		$meta_keys = array(
 			'subject'   => self::META_SUBJECT,
@@ -308,6 +336,8 @@ final class Salve_Marketing_Campaigns {
 			'message'   => self::META_MESSAGE,
 			'cta_label' => self::META_CTA_LABEL,
 			'cta_url'   => self::META_CTA_URL,
+			'product_one' => self::META_PRODUCT_ONE,
+			'product_two' => self::META_PRODUCT_TWO,
 		);
 		foreach ( $meta_keys as $field => $meta_key ) {
 			$value = get_post_meta( $campaign_id, $meta_key, true );
@@ -316,6 +346,68 @@ final class Salve_Marketing_Campaigns {
 			}
 		}
 		return $defaults;
+	}
+
+	private function available_products() {
+		return get_posts(
+			array(
+				'post_type'      => 'product',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			)
+		);
+	}
+
+	private function featured_products( $campaign_id ) {
+		$fields    = $this->campaign_fields( $campaign_id );
+		$product_ids = array();
+
+		foreach ( array( $fields['product_one'], $fields['product_two'] ) as $product_id ) {
+			$product_id = absint( $product_id );
+			if ( $product_id && 'product' === get_post_type( $product_id ) && 'publish' === get_post_status( $product_id ) ) {
+				$product_ids[] = $product_id;
+			}
+		}
+
+		$product_ids = array_values( array_unique( $product_ids ) );
+		$recent_ids  = get_posts(
+			array(
+				'post_type'      => 'product',
+				'post_status'    => 'publish',
+				'posts_per_page' => 2,
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+				'fields'         => 'ids',
+				'post__not_in'   => $product_ids,
+			)
+		);
+
+		return array_slice( array_merge( $product_ids, $recent_ids ), 0, 2 );
+	}
+
+	private function render_product_cards( $campaign_id ) {
+		$cards = array();
+
+		foreach ( $this->featured_products( $campaign_id ) as $product_id ) {
+			$product   = function_exists( 'wc_get_product' ) ? wc_get_product( $product_id ) : false;
+			$title     = get_the_title( $product_id );
+			$url       = get_permalink( $product_id );
+			$image_url = get_the_post_thumbnail_url( $product_id, 'medium_large' );
+			$price     = $product ? wp_strip_all_tags( $product->get_price_html() ) : '';
+			$image     = $image_url ? '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $title ) . '" width="252" style="display:block;width:100%;height:auto;border:0">' : '';
+
+			$cards[] = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5ddd3"><tr><td>' . $image . '</td></tr><tr><td style="padding:18px 16px 8px;font-family:Georgia,serif;font-size:20px;line-height:1.2">' . esc_html( $title ) . '</td></tr><tr><td style="padding:0 16px 18px;color:#6b635a;font-size:14px">' . esc_html( $price ) . '</td></tr><tr><td style="padding:0 16px 20px"><a href="' . esc_url( $url ) . '" style="color:#1a1612;font-size:11px;font-weight:bold;letter-spacing:1.25px;text-decoration:underline;text-transform:uppercase">Shop now</a></td></tr></table>';
+		}
+
+		if ( ! $cards ) {
+			return '';
+		}
+
+		$first_card  = $cards[0];
+		$second_card = isset( $cards[1] ) ? $cards[1] : '';
+		return '<tr><td style="padding:10px 44px 32px"><div style="margin:0 0 14px;color:#6b635a;font-size:11px;font-weight:bold;letter-spacing:1.8px;text-transform:uppercase">Featured for you</div><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="50%" valign="top" style="padding:0 8px 0 0">' . $first_card . '</td><td width="50%" valign="top" style="padding:0 0 0 8px">' . $second_card . '</td></tr></table></td></tr>';
 	}
 
 	private function replace_tokens( $value, $recipient ) {
