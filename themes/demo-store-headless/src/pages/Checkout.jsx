@@ -43,6 +43,7 @@ function paymentMethodLabel(method) {
     cod: 'Cash on delivery',
     cheque: 'Check payments',
     paypal: 'PayPal',
+    salve_stripe_test: 'Card — Stripe test mode',
   };
   return labels[method] || method.replace(/[-_]+/g, ' ');
 }
@@ -164,6 +165,12 @@ function Checkout() {
       const orderId = order?.order_id ?? order?.id;
       if (!orderId) {
         throw new Error('Your order was placed, but its confirmation details were unavailable.');
+      }
+
+      const paymentRedirect = order?.payment_result?.redirect_url || order?.redirect;
+      if (paymentRedirect) {
+        window.location.assign(paymentRedirect);
+        return;
       }
 
       const orderWithDeposit = depositSimulation ? { ...order, deposit_simulation: depositSimulation } : order;

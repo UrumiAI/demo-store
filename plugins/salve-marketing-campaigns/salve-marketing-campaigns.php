@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Salve Marketing Campaigns
  * Description: Create editable marketing email campaigns, preview them, send a test, and launch consent-based batches with unsubscribe support.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Author: Salve
  * License: GPL-2.0-or-later
  * Text Domain: salve-marketing-campaigns
@@ -663,3 +663,147 @@ final class Salve_Deposit_Simulation {
 }
 
 new Salve_Deposit_Simulation();
+
+add_action( 'plugins_loaded', 'salve_register_stripe_test_gateway', 20 );
+add_action( 'template_redirect', 'salve_handle_stripe_test_return' );
+add_filter( 'woocommerce_payment_gateways', 'salve_add_stripe_test_gateway' );
+add_filter( 'woocommerce_available_payment_gateways', 'salve_add_stripe_test_to_available_gateways', 5 );
+
+/**
+ * Registers a hosted Stripe Checkout gateway. It deliberately accepts only
+ * Stripe test keys and keeps card entry entirely on Stripe's hosted page.
+ */
+function salve_register_stripe_test_gateway() {
+	if ( ! class_exists( 'WC_Payment_Gateway' ) || class_exists( 'Salve_Stripe_Test_Gateway' ) ) {
+		return;
+	}
+
+	class Salve_Stripe_Test_Gateway extends WC_Payment_Gateway {
+		const ID         = 'salve_stripe_test';
+		const SECRET_KEY = 'salve_stripe_test_secret_key';
+
+		public function __construct() {
+			$this->id                 = self::ID;
+			$this->method_title       = __( 'Stripe test payments', 'salve-marketing-campaigns' );
+			$this->method_description = __( 'Hosted Stripe Checkout using test credentials only.', 'salve-marketing-campaigns' );
+			$this->title              = __( 'Card — Stripe test mode', 'salve-marketing-campaigns' );
+			$this->description        = __( 'Use a Stripe test card. No live payment is collected.', 'salve-marketing-campaigns' );
+			$this->enabled            = 'yes';
+			$this->has_fields         = false;
+			$this->supports           = array( 'products' );
+		}
+
+		public function is_available() {
+			return parent::is_available();
+		}
+
+		public function process_payment( $order_id ) {
+			$order      = wc_get_order( $order_id );
+			$secret_key = $this->secret_key();
+			if ( ! $order || ! $secret_key ) {
+				wc_add_notice( __( 'Stripe test payments are not configured.', 'salve-marketing-campaigns' ), 'error' );
+				return array( 'result' => 'failure' );
+			}
+
+			$amount = wc_add_number_precision( $order->get_total() );
+			if ( $amount <= 0 ) {
+				wc_add_notice( __( 'Stripe test payments require a positive order total.', 'salve-marketing-campaigns' ), 'error' );
+				return array( 'result' => 'failure' );
+			}
+
+			$return_url = add_query_arg(
+				array(
+					'salve_stripe_return' => '1',
+					'order_id'            => $order->get_id(),
+					'key'                 => $order->get_order_key(),
+				),
+				home_url( '/' )
+			) . '&session_id={CHECKOUT_SESSION_ID}';
+			$response = wp_remote_post(
+				'https://api.stripe.com/v1/checkout/sessions',
+				array(
+					'timeout' => 45,
+					'headers' => array( 'Authorization' => 'Bearer ' . $secret_key ),
+					'body'    => array(
+						'mode'                                           => 'payment',
+						'payment_method_types[0]'                        => 'card',
+						'success_url'                                    => $return_url,
+						'cancel_url'                                     => add_query_arg( 'stripe_cancelled', '1', home_url( '/checkout/' ) ),
+						'client_reference_id'                            => (string) $order->get_id(),
+						'customer_email'                                 => $order->get_billing_email(),
+						'metadata[order_id]'                             => (string) $order->get_id(),
+						'metadata[order_key]'                            => $order->get_order_key(),
+						'payment_intent_data[metadata][order_id]'         => (string) $order->get_id(),
+						'line_items[0][price_data][currency]'            => strtolower( $order->get_currency() ),
+						'line_items[0][price_data][unit_amount]'         => $amount,
+						'line_items[0][price_data][product_data][name]'  => sprintf( __( '%s order #%s', 'salve-marketing-campaigns' ), get_bloginfo( 'name' ), $order->get_order_number() ),
+						'line_items[0][quantity]'                        => 1,
+					),
+				)
+			);
+			$session = ! is_wp_error( $response ) ? json_decode( wp_remote_retrieve_body( $response ), true ) : array();
+			if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) >= 300 || empty( $session['id'] ) || empty( $session['url'] ) ) {
+				$order->add_order_note( __( 'Stripe test Checkout session could not be created.', 'salve-marketing-campaigns' ) );
+				wc_add_notice( __( 'Stripe could not start the test checkout. Please try again.', 'salve-marketing-campaigns' ), 'error' );
+				return array( 'result' => 'failure' );
+			}
+
+			$order->update_meta_data( '_salve_stripe_test_session_id', sanitize_text_field( $session['id'] ) );
+			$order->add_order_note( __( 'Stripe test Checkout session created. Awaiting payment confirmation.', 'salve-marketing-campaigns' ) );
+			$order->save();
+			return array( 'result' => 'success', 'redirect' => esc_url_raw( $session['url'] ) );
+		}
+
+		private function secret_key() {
+			return (string) get_option( self::SECRET_KEY, '' );
+		}
+	}
+
+}
+
+function salve_add_stripe_test_gateway( $gateways ) {
+	salve_register_stripe_test_gateway();
+	if ( class_exists( 'Salve_Stripe_Test_Gateway' ) ) {
+		$gateways[] = 'Salve_Stripe_Test_Gateway';
+	}
+	return $gateways;
+}
+
+function salve_add_stripe_test_to_available_gateways( $gateways ) {
+	salve_register_stripe_test_gateway();
+	if ( class_exists( 'Salve_Stripe_Test_Gateway' ) ) {
+		$gateway = new Salve_Stripe_Test_Gateway();
+		if ( $gateway->is_available() ) {
+			$gateways[ $gateway->id ] = $gateway;
+		}
+	}
+	return $gateways;
+}
+
+function salve_handle_stripe_test_return() {
+	if ( '1' !== ( $_GET['salve_stripe_return'] ?? '' ) ) {
+		return;
+	}
+	$order_id   = absint( $_GET['order_id'] ?? 0 );
+	$order_key  = sanitize_text_field( wp_unslash( $_GET['key'] ?? '' ) );
+	$session_id = sanitize_text_field( wp_unslash( $_GET['session_id'] ?? '' ) );
+	$order      = $order_id ? wc_get_order( $order_id ) : false;
+	if ( ! $order || ! $session_id || ! hash_equals( $order->get_order_key(), $order_key ) || ! hash_equals( (string) $order->get_meta( '_salve_stripe_test_session_id', true ), $session_id ) ) {
+		wp_die( esc_html__( 'The Stripe test payment return could not be verified.', 'salve-marketing-campaigns' ), esc_html__( 'Payment verification', 'salve-marketing-campaigns' ), array( 'response' => 403 ) );
+	}
+
+	$secret_key = (string) get_option( 'salve_stripe_test_secret_key', '' );
+	$response   = wp_remote_get( 'https://api.stripe.com/v1/checkout/sessions/' . rawurlencode( $session_id ), array( 'timeout' => 45, 'headers' => array( 'Authorization' => 'Bearer ' . $secret_key ) ) );
+	$session    = ! is_wp_error( $response ) ? json_decode( wp_remote_retrieve_body( $response ), true ) : array();
+	$amount     = wc_add_number_precision( $order->get_total() );
+	if ( is_wp_error( $response ) || 'paid' !== ( $session['payment_status'] ?? '' ) || (string) $order->get_id() !== (string) ( $session['metadata']['order_id'] ?? '' ) || $amount !== (int) ( $session['amount_total'] ?? -1 ) ) {
+		wp_die( esc_html__( 'Stripe has not confirmed this test payment.', 'salve-marketing-campaigns' ), esc_html__( 'Payment pending', 'salve-marketing-campaigns' ), array( 'response' => 402 ) );
+	}
+
+	if ( ! $order->is_paid() ) {
+		$order->payment_complete( sanitize_text_field( $session['payment_intent'] ?? $session_id ) );
+		$order->add_order_note( __( 'Stripe test payment confirmed after hosted Checkout.', 'salve-marketing-campaigns' ) );
+	}
+	wp_safe_redirect( add_query_arg( 'key', $order->get_order_key(), home_url( '/order-confirmation/' . $order->get_id() ) ) );
+	exit;
+}
