@@ -391,10 +391,15 @@ final class Salve_Marketing_Campaigns {
 		$cards = array();
 
 		foreach ( $this->featured_products( $campaign_id ) as $product_id ) {
-			$product   = function_exists( 'wc_get_product' ) ? wc_get_product( $product_id ) : false;
-			$title     = get_the_title( $product_id );
-			$url       = get_permalink( $product_id );
-			$image_url = get_the_post_thumbnail_url( $product_id, 'medium_large' );
+			$product    = function_exists( 'wc_get_product' ) ? wc_get_product( $product_id ) : false;
+			$title      = get_the_title( $product_id );
+			$url        = get_permalink( $product_id );
+			$image_id   = $product ? $product->get_image_id() : get_post_thumbnail_id( $product_id );
+			$gallery_ids = $product ? $product->get_gallery_image_ids() : array();
+			if ( ! $image_id && $gallery_ids ) {
+				$image_id = $gallery_ids[0];
+			}
+			$image_url = $image_id ? wp_get_attachment_url( $image_id ) : '';
 			$price     = $product ? wp_strip_all_tags( $product->get_price_html() ) : '';
 			$image     = $image_url ? '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $title ) . '" width="252" style="display:block;width:100%;height:auto;border:0">' : '';
 
