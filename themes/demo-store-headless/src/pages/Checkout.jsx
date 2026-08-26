@@ -159,9 +159,21 @@ function Checkout() {
         ...payload,
         payment_method: selectedPaymentMethod,
       });
-      await refreshCart();
+      const orderId = order?.order_id ?? order?.id;
+      if (!orderId) {
+        throw new Error('Your order was placed, but its confirmation details were unavailable.');
+      }
+
       const orderKey = order?.order_key ? `?key=${encodeURIComponent(order.order_key)}` : '';
-      navigate(`/order-confirmation/${order.order_id}${orderKey}`);
+      try {
+        sessionStorage.setItem(`demo-store-order-${orderId}`, JSON.stringify(order));
+      } catch {
+        // The confirmation route still receives the order through navigation state.
+      }
+      navigate(`/order-confirmation/${orderId}${orderKey}`, { state: { order } });
+      refreshCart().catch((refreshError) => {
+        console.error('Failed to refresh the cart after checkout', refreshError);
+      });
     } catch (err) {
       setErrors({ submit: err.message || 'Checkout failed. Please try again.' });
       window.scrollTo({ top: 0, behavior: 'smooth' });

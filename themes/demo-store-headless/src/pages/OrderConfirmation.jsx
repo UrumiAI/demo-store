@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { getOrder } from '../api/checkout';
 import '../styles/OrderConfirmation.css';
 
@@ -19,10 +19,20 @@ function formatAmount(amount, currency) {
   return `${symbol}${value}`;
 }
 
+function getStoredOrder(orderId) {
+  try {
+    const stored = sessionStorage.getItem(`demo-store-order-${orderId}`);
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+}
+
 function OrderConfirmation() {
   const { orderId } = useParams();
   const [searchParams] = useSearchParams();
   const orderKey = searchParams.get('key');
+  const location = useLocation();
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,6 +41,15 @@ function OrderConfirmation() {
   useEffect(() => {
     if (!orderId) return;
     let cancelled = false;
+    const initialOrder = location.state?.order || getStoredOrder(orderId);
+
+    if (initialOrder) {
+      setOrder(initialOrder);
+      setError(null);
+      setLoading(false);
+      return () => { cancelled = true; };
+    }
+
     setLoading(true);
     getOrder(orderId, orderKey)
       .then((data) => {
@@ -46,7 +65,7 @@ function OrderConfirmation() {
         if (!cancelled) setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [orderId, orderKey]);
+  }, [location.state, orderId, orderKey]);
 
   if (loading) {
     return (
