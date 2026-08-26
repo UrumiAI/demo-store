@@ -15,6 +15,11 @@ final class Salve_Marketing_Campaigns {
 	const CRON_HOOK       = 'salve_marketing_send_batch';
 	const META_STATUS     = '_salve_campaign_status';
 	const META_SUBJECT    = '_salve_campaign_subject';
+	const META_EYEBROW    = '_salve_campaign_eyebrow';
+	const META_HEADING    = '_salve_campaign_heading';
+	const META_MESSAGE    = '_salve_campaign_message';
+	const META_CTA_LABEL  = '_salve_campaign_cta_label';
+	const META_CTA_URL    = '_salve_campaign_cta_url';
 	const META_OFFSET     = '_salve_campaign_offset';
 	const META_SENT       = '_salve_campaign_sent';
 	const META_FAILED     = '_salve_campaign_failed';
@@ -24,7 +29,6 @@ final class Salve_Marketing_Campaigns {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_campaign_post_type' ) );
-		add_filter( 'default_content', array( $this, 'default_campaign_content' ), 10, 2 );
 		add_action( 'add_meta_boxes_' . self::POST_TYPE, array( $this, 'add_campaign_meta_box' ) );
 		add_action( 'save_post_' . self::POST_TYPE, array( $this, 'save_campaign_fields' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'add_campaign_row_action' ), 10, 2 );
@@ -53,20 +57,12 @@ final class Salve_Marketing_Campaigns {
 				'show_ui'             => true,
 				'show_in_menu'        => true,
 				'menu_icon'           => 'dashicons-email-alt',
-				'supports'            => array( 'title', 'editor' ),
+				'supports'            => array( 'title' ),
 				'capability_type'     => 'post',
 				'map_meta_cap'        => true,
 				'exclude_from_search' => true,
 			)
 		);
-	}
-
-	public function default_campaign_content( $content, $post ) {
-		if ( self::POST_TYPE !== $post->post_type || '' !== $content ) {
-			return $content;
-		}
-
-		return '<p>Hello {{first_name}},</p><p>We have something considered especially for you.</p><p>Warmly,<br>Salve</p>';
 	}
 
 	public function add_campaign_meta_box() {
@@ -81,15 +77,20 @@ final class Salve_Marketing_Campaigns {
 	}
 
 	public function render_campaign_meta_box( $post ) {
-		$subject = get_post_meta( $post->ID, self::META_SUBJECT, true );
+		$fields  = $this->campaign_fields( $post->ID );
 		$status  = get_post_meta( $post->ID, self::META_STATUS, true ) ?: 'draft';
 		wp_nonce_field( 'salve_campaign_details', 'salve_campaign_details_nonce' );
 		?>
-		<p>
-			<label for="salve_campaign_subject"><strong><?php esc_html_e( 'Email subject', 'salve-marketing-campaigns' ); ?></strong></label><br>
-			<input class="widefat" type="text" id="salve_campaign_subject" name="salve_campaign_subject" value="<?php echo esc_attr( $subject ); ?>" placeholder="<?php esc_attr_e( 'A considered note from Salve', 'salve-marketing-campaigns' ); ?>">
-		</p>
-		<p><?php esc_html_e( 'Edit the email body in the main editor above. Available personalisation: {{first_name}}, {{site_name}}.', 'salve-marketing-campaigns' ); ?></p>
+		<p><?php esc_html_e( 'This campaign uses the Salve native HTML email design. Edit the content fields below; the launch screen shows the exact email preview.', 'salve-marketing-campaigns' ); ?></p>
+		<table class="form-table" role="presentation">
+			<tr><th><label for="salve_campaign_subject"><?php esc_html_e( 'Email subject', 'salve-marketing-campaigns' ); ?></label></th><td><input class="regular-text" type="text" id="salve_campaign_subject" name="salve_campaign_subject" value="<?php echo esc_attr( $fields['subject'] ); ?>"></td></tr>
+			<tr><th><label for="salve_campaign_eyebrow"><?php esc_html_e( 'Eyebrow', 'salve-marketing-campaigns' ); ?></label></th><td><input class="regular-text" type="text" id="salve_campaign_eyebrow" name="salve_campaign_eyebrow" value="<?php echo esc_attr( $fields['eyebrow'] ); ?>"></td></tr>
+			<tr><th><label for="salve_campaign_heading"><?php esc_html_e( 'Heading', 'salve-marketing-campaigns' ); ?></label></th><td><input class="regular-text" type="text" id="salve_campaign_heading" name="salve_campaign_heading" value="<?php echo esc_attr( $fields['heading'] ); ?>"></td></tr>
+			<tr><th><label for="salve_campaign_message"><?php esc_html_e( 'Message', 'salve-marketing-campaigns' ); ?></label></th><td><textarea class="large-text" rows="7" id="salve_campaign_message" name="salve_campaign_message"><?php echo esc_textarea( $fields['message'] ); ?></textarea></td></tr>
+			<tr><th><label for="salve_campaign_cta_label"><?php esc_html_e( 'Button label', 'salve-marketing-campaigns' ); ?></label></th><td><input class="regular-text" type="text" id="salve_campaign_cta_label" name="salve_campaign_cta_label" value="<?php echo esc_attr( $fields['cta_label'] ); ?>"></td></tr>
+			<tr><th><label for="salve_campaign_cta_url"><?php esc_html_e( 'Button URL', 'salve-marketing-campaigns' ); ?></label></th><td><input class="large-text code" type="url" id="salve_campaign_cta_url" name="salve_campaign_cta_url" value="<?php echo esc_attr( $fields['cta_url'] ); ?>"></td></tr>
+		</table>
+		<p class="description"><?php esc_html_e( 'Personalisation fields: {{first_name}} and {{site_name}}.', 'salve-marketing-campaigns' ); ?></p>
 		<p><strong><?php esc_html_e( 'Status:', 'salve-marketing-campaigns' ); ?></strong> <?php echo esc_html( ucfirst( $status ) ); ?></p>
 		<?php if ( $post->ID ) : ?>
 			<p><a class="button button-secondary" href="<?php echo esc_url( $this->launch_url( $post->ID ) ); ?>"><?php esc_html_e( 'Preview, test & launch', 'salve-marketing-campaigns' ); ?></a></p>
@@ -104,8 +105,19 @@ final class Salve_Marketing_Campaigns {
 		if ( ! current_user_can( 'edit_post', $post_id ) || empty( $_POST['salve_campaign_details_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['salve_campaign_details_nonce'] ) ), 'salve_campaign_details' ) ) {
 			return;
 		}
-		if ( isset( $_POST['salve_campaign_subject'] ) ) {
-			update_post_meta( $post_id, self::META_SUBJECT, sanitize_text_field( wp_unslash( $_POST['salve_campaign_subject'] ) ) );
+		$fields = array(
+			'subject'   => array( self::META_SUBJECT, 'sanitize_text_field' ),
+			'eyebrow'   => array( self::META_EYEBROW, 'sanitize_text_field' ),
+			'heading'   => array( self::META_HEADING, 'sanitize_text_field' ),
+			'message'   => array( self::META_MESSAGE, 'sanitize_textarea_field' ),
+			'cta_label' => array( self::META_CTA_LABEL, 'sanitize_text_field' ),
+			'cta_url'   => array( self::META_CTA_URL, 'esc_url_raw' ),
+		);
+		foreach ( $fields as $field => $settings ) {
+			$key = 'salve_campaign_' . $field;
+			if ( isset( $_POST[ $key ] ) ) {
+				update_post_meta( $post_id, $settings[0], call_user_func( $settings[1], wp_unslash( $_POST[ $key ] ) ) );
+			}
 		}
 		if ( ! get_post_meta( $post_id, self::META_STATUS, true ) ) {
 			update_post_meta( $post_id, self::META_STATUS, 'draft' );
@@ -191,8 +203,8 @@ final class Salve_Marketing_Campaigns {
 			$this->redirect_with_notice( $campaign_id, 'confirmation_required' );
 		}
 		$campaign = get_post( $campaign_id );
-		$subject  = get_post_meta( $campaign_id, self::META_SUBJECT, true );
-		if ( ! $campaign || '' === trim( $subject ) || '' === trim( wp_strip_all_tags( $campaign->post_content ) ) ) {
+		$fields   = $this->campaign_fields( $campaign_id );
+		if ( ! $campaign || '' === trim( $fields['subject'] ) || '' === trim( $fields['heading'] ) || '' === trim( $fields['message'] ) ) {
 			$this->redirect_with_notice( $campaign_id, 'campaign_incomplete' );
 		}
 		if ( ! $this->eligible_recipients() ) {
@@ -264,27 +276,58 @@ final class Salve_Marketing_Campaigns {
 		if ( ! $campaign || self::POST_TYPE !== $campaign->post_type || ! is_email( $recipient->user_email ) ) {
 			return false;
 		}
-		$subject = $this->replace_tokens( get_post_meta( $campaign_id, self::META_SUBJECT, true ), $recipient );
+		$subject = sanitize_text_field( $this->replace_tokens( $this->campaign_fields( $campaign_id )['subject'], $recipient ) );
 		return wp_mail( $recipient->user_email, $subject, $this->render_email( $campaign, $recipient ), array( 'Content-Type: text/html; charset=UTF-8' ) );
 	}
 
 	private function render_email( $campaign, $recipient ) {
-		$body     = $this->replace_tokens( wpautop( wp_kses_post( $campaign->post_content ) ), $recipient );
-		$site_name = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
+		$fields      = $this->campaign_fields( $campaign->ID );
+		$eyebrow     = esc_html( $this->replace_tokens( $fields['eyebrow'], $recipient ) );
+		$heading     = esc_html( $this->replace_tokens( $fields['heading'], $recipient ) );
+		$message     = nl2br( esc_html( $this->replace_tokens( $fields['message'], $recipient ) ) );
+		$cta_label   = esc_html( $this->replace_tokens( $fields['cta_label'], $recipient ) );
+		$cta_url     = esc_url( $this->replace_tokens( $fields['cta_url'], $recipient ) );
+		$site_name   = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
 		$unsubscribe = $recipient->ID ? $this->unsubscribe_url( $recipient ) : '#';
-		return '<!doctype html><html><body style="margin:0;background:#f7f3ed;color:#1a1612;font-family:Arial,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:32px 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;margin:0 auto;background:#ffffff"><tr><td style="padding:44px 44px 28px;font-family:Georgia,serif;font-size:34px;letter-spacing:-1px">' . esc_html( $site_name ) . '</td></tr><tr><td style="padding:0 44px 36px;font-size:16px;line-height:1.65">' . $body . '</td></tr><tr><td style="padding:24px 44px;background:#f0ebe3;color:#6b635a;font-size:12px;line-height:1.5">You are receiving this because you opted in to marketing from ' . esc_html( $site_name ) . '. <a style="color:#6b635a" href="' . esc_url( $unsubscribe ) . '">Unsubscribe</a></td></tr></table></td></tr></table></body></html>';
+		return '<!doctype html><html><body style="margin:0;background:#f7f3ed;color:#1a1612;font-family:Arial,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:32px 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;margin:0 auto;background:#ffffff"><tr><td style="padding:42px 44px 30px;background:#1a1612;color:#fbf8f3"><div style="font-family:Georgia,serif;font-size:34px;letter-spacing:-1px">' . esc_html( $site_name ) . '</div><div style="margin-top:18px;color:#d9d2c8;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase">' . $eyebrow . '</div><h1 style="margin:10px 0 0;color:#fbf8f3;font-family:Georgia,serif;font-size:42px;font-weight:normal;line-height:1.08">' . $heading . '</h1></td></tr><tr><td style="padding:42px 44px 20px;font-size:16px;line-height:1.7">' . $message . '</td></tr><tr><td style="padding:12px 44px 44px"><a href="' . $cta_url . '" style="display:inline-block;background:#1a1612;color:#fbf8f3;padding:14px 24px;font-size:12px;font-weight:bold;letter-spacing:1.5px;text-decoration:none;text-transform:uppercase">' . $cta_label . '</a></td></tr><tr><td style="padding:24px 44px;background:#f0ebe3;color:#6b635a;font-size:12px;line-height:1.5">You are receiving this because you opted in to marketing from ' . esc_html( $site_name ) . '. <a style="color:#6b635a" href="' . esc_url( $unsubscribe ) . '">Unsubscribe</a></td></tr></table></td></tr></table></body></html>';
+	}
+
+	private function campaign_fields( $campaign_id ) {
+		$defaults = array(
+			'subject'   => 'A considered note from {{site_name}}',
+			'eyebrow'   => 'Considered cosmetics',
+			'heading'   => 'A small ritual, for you.',
+			'message'   => "Hello {{first_name}},\n\nWe have something considered especially for you.",
+			'cta_label' => 'Shop the collection',
+			'cta_url'   => home_url( '/shop' ),
+		);
+		$meta_keys = array(
+			'subject'   => self::META_SUBJECT,
+			'eyebrow'   => self::META_EYEBROW,
+			'heading'   => self::META_HEADING,
+			'message'   => self::META_MESSAGE,
+			'cta_label' => self::META_CTA_LABEL,
+			'cta_url'   => self::META_CTA_URL,
+		);
+		foreach ( $meta_keys as $field => $meta_key ) {
+			$value = get_post_meta( $campaign_id, $meta_key, true );
+			if ( '' !== $value ) {
+				$defaults[ $field ] = $value;
+			}
+		}
+		return $defaults;
 	}
 
 	private function replace_tokens( $value, $recipient ) {
-		$first_name = get_user_meta( $recipient->ID, 'first_name', true );
+		$first_name = $recipient->ID ? get_user_meta( $recipient->ID, 'first_name', true ) : '';
 		if ( ! $first_name ) {
 			$first_name = $recipient->display_name;
 		}
 		return strtr(
 			$value,
 			array(
-				'{{first_name}}' => esc_html( $first_name ?: __( 'there', 'salve-marketing-campaigns' ) ),
-				'{{site_name}}'  => esc_html( get_bloginfo( 'name' ) ),
+				'{{first_name}}' => wp_strip_all_tags( $first_name ?: __( 'there', 'salve-marketing-campaigns' ) ),
+				'{{site_name}}'  => wp_strip_all_tags( get_bloginfo( 'name' ) ),
 			)
 		);
 	}
@@ -368,7 +411,7 @@ final class Salve_Marketing_Campaigns {
 			'test_failed'           => array( 'error', __( 'WordPress could not send the test email. Check your mail/SMTP configuration.', 'salve-marketing-campaigns' ) ),
 			'queued'                => array( 'success', __( 'Campaign queued. Delivery will run in small background batches.', 'salve-marketing-campaigns' ) ),
 			'confirmation_required' => array( 'error', __( 'Please confirm the marketing consent statement before launching.', 'salve-marketing-campaigns' ) ),
-			'campaign_incomplete'   => array( 'error', __( 'Add an email subject and body before launching.', 'salve-marketing-campaigns' ) ),
+			'campaign_incomplete'   => array( 'error', __( 'Add an email subject, heading, and message before launching.', 'salve-marketing-campaigns' ) ),
 			'no_recipients'         => array( 'error', __( 'There are no opted-in recipients yet.', 'salve-marketing-campaigns' ) ),
 		);
 		$key = sanitize_key( wp_unslash( $_GET['salve_notice'] ) );
