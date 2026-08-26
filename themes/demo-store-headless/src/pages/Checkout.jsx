@@ -76,6 +76,7 @@ function Checkout() {
   const [shipping, setShipping] = useState(emptyAddress());
   const [paymentMethod, setPaymentMethod] = useState('');
   const [customerNote, setCustomerNote] = useState('');
+  const [hostedCheckoutUrl, setHostedCheckoutUrl] = useState('');
 
   useEffect(() => {
     if (!cartLoading && items.length === 0) {
@@ -169,6 +170,13 @@ function Checkout() {
 
       const paymentRedirect = order?.payment_result?.redirect_url || order?.redirect;
       if (paymentRedirect) {
+        // Stripe Checkout does not run inside the embedded preview iframe. Keep
+        // the final navigation as a user click so the browser can leave the
+        // iframe and load Stripe at the top level.
+        if (window.top !== window.self) {
+          setHostedCheckoutUrl(paymentRedirect);
+          return;
+        }
         window.location.assign(paymentRedirect);
         return;
       }
@@ -197,6 +205,23 @@ function Checkout() {
       <div className="loading-state">
         <div className="spinner" />
         <p>Loading checkout…</p>
+      </div>
+    );
+  }
+
+  if (hostedCheckoutUrl) {
+    return (
+      <div className="checkout-page checkout-hosted-payment">
+        <div className="checkout-header">
+          <h1>CONTINUE TO SECURE PAYMENT</h1>
+          <div className="title-divider" />
+        </div>
+        <div className="order-summary hosted-payment-card">
+          <p>Your order is reserved. Stripe needs to open outside the embedded preview to collect your test card details.</p>
+          <a className="place-order-btn" href={hostedCheckoutUrl} target="_top" rel="noreferrer">
+            CONTINUE TO STRIPE
+          </a>
+        </div>
       </div>
     );
   }
