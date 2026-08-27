@@ -37,17 +37,19 @@
   border-bottom: var(--border-width) solid var(--color-border-subtle);
 }
 
-.form-row {
+.checkout-form .checkout-field-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
+  align-items: start;
 }
 
-.form-field {
+.checkout-form .form-field {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   margin-bottom: var(--space-3);
+  min-width: 0;
 }
 
 .form-field label {
@@ -62,6 +64,9 @@
 .form-field input,
 .form-field select,
 .form-field textarea {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
   background: var(--color-bg-elevated);
   border: var(--border-width) solid var(--color-border-subtle);
   border-radius: var(--radius-sm);
@@ -156,6 +161,26 @@
   margin-top: var(--space-2);
 }
 
+.deposit-simulation-note {
+  margin: 0 0 var(--space-5);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--color-border-subtle);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  font-size: var(--type-caption-size);
+  line-height: 1.55;
+}
+
+.deposit-simulation-note strong {
+  display: block;
+  color: var(--color-text-primary);
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--track-widest);
+  text-transform: uppercase;
+}
+
+.deposit-simulation-note p { margin-top: var(--space-2); }
+
 .payment-methods {
   margin: var(--space-5) 0;
   padding-top: var(--space-4);
@@ -213,5 +238,5 @@
     gap: var(--space-6);
   }
   .order-summary { position: static; }
-  .form-row { grid-template-columns: 1fr; }
+  .checkout-form .checkout-field-row { grid-template-columns: 1fr; }
 }

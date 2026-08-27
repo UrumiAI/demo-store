@@ -22,7 +22,9 @@ export function getCheckout() {
       shipping_address: {},
     });
   }
-  return storeApiRequest('checkout');
+  // WooCommerce exposes the available gateways on the cart response. The
+  // checkout endpoint returns a draft order and does not include them.
+  return storeApiRequest('cart');
 }
 
 export function submitCheckout(payload) {
