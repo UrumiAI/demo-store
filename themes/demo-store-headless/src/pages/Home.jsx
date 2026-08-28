@@ -54,13 +54,13 @@ function Home() {
     <div className="orbital-home">
       <section className="orbital-intro-video" aria-label="ORBITAL motion film">
         <video autoPlay muted loop playsInline preload="metadata" poster="/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg" aria-hidden="true">
-          <source src="/wp-content/themes/demo-store-headless/public/energy/video/neon-light-layer.mp4" type="video/mp4" />
+          <source src="/wp-content/themes/demo-store-headless/public/shoes/orbital-motion.mp4" type="video/mp4" />
         </video>
         <p><span>ORBITAL</span><b>01 / MOTION FILM</b></p>
       </section>
       <section className="shoe-showcase" aria-label="Featured footwear">
         <video className="shoe-hero-video" autoPlay muted loop playsInline preload="metadata" poster="/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg" aria-hidden="true">
-          <source src="/wp-content/themes/demo-store-headless/public/energy/video/neon-light-layer.mp4" type="video/mp4" />
+          <source src="/wp-content/themes/demo-store-headless/public/shoes/orbital-motion.mp4" type="video/mp4" />
         </video>
         <div className="shoe-orbit shoe-orbit-one" aria-hidden="true" />
         <div className="shoe-orbit shoe-orbit-two" aria-hidden="true" />

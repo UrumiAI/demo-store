@@ -60,7 +60,7 @@ function Footer() {
 
       <div className="footer-bottom">
         <span>© {currentYear} {siteName}. All rights reserved.</span>
-        <a href="https://freestockfootagearchive.com/neon-light-layer-effect-abstract-night/" target="_blank" rel="noreferrer">Hero loop: Free Stock Footage Archive · CC BY 4.0</a>
+        <a href="https://www.pexels.com/video/video-of-a-person-walking-6326752/" target="_blank" rel="noreferrer">Shoe motion film: Pexels</a>
       </div>
     </footer>
   );
