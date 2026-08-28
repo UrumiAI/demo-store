@@ -8,6 +8,10 @@
 $theme_uri = get_template_directory_uri();
 ?>
 <div class="orbital-home">
+    <section class="orbital-intro-video" aria-label="ORBITAL motion film">
+        <video autoplay muted loop playsinline preload="metadata" poster="<?php echo esc_url($theme_uri . '/public/shoes/oxide-high.jpg'); ?>" aria-hidden="true"><source src="<?php echo esc_url($theme_uri . '/public/energy/video/neon-light-layer.mp4'); ?>" type="video/mp4"></video>
+        <p><span>ORBITAL</span><b>01 / MOTION FILM</b></p>
+    </section>
     <section class="shoe-showcase" aria-label="Featured footwear">
         <video class="shoe-hero-video" autoplay muted loop playsinline preload="metadata" poster="<?php echo esc_url($theme_uri . '/public/shoes/oxide-high.jpg'); ?>" aria-hidden="true"><source src="<?php echo esc_url($theme_uri . '/public/energy/video/neon-light-layer.mp4'); ?>" type="video/mp4"></video>
         <div class="shoe-orbit shoe-orbit-one" aria-hidden="true"></div>
