@@ -13,7 +13,7 @@ const shoes = [
     price: '$180',
     previousPrice: '$210',
     image: '/wp-content/themes/demo-store-headless/public/shoes/aero-void.jpg',
-    slug: 'aero-void-runner',
+    slug: 'aero-void',
     copy: 'A low-gravity runner for city miles, late nights, and every fast exit.',
     color: 'Ivory mesh / bone',
   },

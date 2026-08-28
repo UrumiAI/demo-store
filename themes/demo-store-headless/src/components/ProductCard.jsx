@@ -21,7 +21,7 @@ function pickPrice(product) {
 }
 
 const shoeArtwork = {
-  'aero-void-runner': '/wp-content/themes/demo-store-headless/public/shoes/aero-void.jpg',
+  'aero-void': '/wp-content/themes/demo-store-headless/public/shoes/aero-void.jpg',
   'oxide-high': '/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg',
   'monorail-02': '/wp-content/themes/demo-store-headless/public/shoes/monorail.jpg',
   'orbit-footwear-pack': '/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg',

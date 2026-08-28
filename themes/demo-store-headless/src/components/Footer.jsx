@@ -35,16 +35,6 @@ function Footer() {
             <Link to="/shop">All footwear</Link>
             <PlaceholderLink>New arrivals</PlaceholderLink>
             <PlaceholderLink>Size guide</PlaceholderLink>
-            <PlaceholderLink>Stockists</PlaceholderLink>
-          </nav>
-        </div>
-
-        <div className="footer-column">
-          <h4>About</h4>
-          <nav>
-            <PlaceholderLink>Our story</PlaceholderLink>
-            <PlaceholderLink>Journal</PlaceholderLink>
-            <PlaceholderLink>Stockists</PlaceholderLink>
           </nav>
         </div>
 

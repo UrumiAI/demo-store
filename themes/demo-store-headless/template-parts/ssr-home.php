@@ -33,7 +33,7 @@ $theme_uri = get_template_directory_uri();
             <div class="shoe-price"><strong>$180</strong><del>$210</del></div>
             <div class="shoe-colour"><span>Color</span><b>Ivory mesh / bone</b></div>
             <div class="shoe-sizes"><span>EU</span><i>38</i><i>40</i><i>42</i><i>44</i></div>
-            <a class="shoe-detail-link" href="<?php echo esc_url(home_url('/product/aero-void-runner')); ?>">View shoe <span>↗</span></a>
+            <a class="shoe-detail-link" href="<?php echo esc_url(home_url('/product/aero-void')); ?>">View shoe <span>↗</span></a>
         </aside>
         <p class="shoe-manifesto">Confidence, engineered for motion.</p>
     </section>
