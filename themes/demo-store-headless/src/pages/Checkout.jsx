@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { getCheckout, submitCheckout, validateCheckoutForm } from '../api/checkout';
+import { getDepositSimulation } from '../utils/depositSimulation';
 import '../styles/Checkout.css';
 
 function emptyAddress() {
@@ -22,7 +23,7 @@ function emptyAddress() {
     city: '',
     state: '',
     postcode: '',
-    country: 'IN',
+    country: 'US',
     email: '',
     phone: '',
   };
@@ -36,9 +37,36 @@ function formatMinor(amount, totals) {
   return `${symbol}${value}`;
 }
 
+function paymentMethodLabel(method) {
+  const labels = {
+    bacs: 'Direct bank transfer',
+    cod: 'Cash on delivery',
+    cheque: 'Check payments',
+    paypal: 'PayPal',
+    salve_stripe_test: 'Card — Stripe test mode',
+  };
+  return labels[method] || method.replace(/[-_]+/g, ' ');
+}
+
+function hasShippingRates(cart) {
+  return (cart?.shipping_rates || []).some(
+    (shippingPackage) => (shippingPackage.shipping_rates || []).length > 0
+  );
+}
+
+function shippingLabel(cart, totals) {
+  if (cart?.needs_shipping && !hasShippingRates(cart)) {
+    return 'Calculated at checkout';
+  }
+  return Number(totals.total_shipping) === 0
+    ? 'Free'
+    : formatMinor(totals.total_shipping, totals);
+}
+
 function Checkout() {
   const navigate = useNavigate();
-  const { items, totals, loading: cartLoading, refreshCart } = useCart();
+  const { cart, items, totals, loading: cartLoading, refreshCart, updateCustomer } = useCart();
+  const depositSimulation = getDepositSimulation(items);
 
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -96,7 +124,7 @@ function Checkout() {
     billing_address: billing,
     shipping_address: shipToDifferent ? shipping : billing,
     payment_method: paymentMethod,
-    customer_note: customerNote,
+    order_notes: customerNote,
   }), [billing, shipping, shipToDifferent, paymentMethod, customerNote]);
 
   const handleSubmit = async (e) => {
@@ -111,10 +139,51 @@ function Checkout() {
     setSubmitting(true);
     setErrors({});
     try {
-      const order = await submitCheckout(payload);
-      await refreshCart();
-      const orderKey = order?.order_key ? `?key=${encodeURIComponent(order.order_key)}` : '';
-      navigate(`/order-confirmation/${order.order_id}${orderKey}`);
+      const updatedCart = await updateCustomer({
+        billing_address: billing,
+        shipping_address: shipToDifferent ? shipping : billing,
+      });
+      const updatedPaymentMethods = updatedCart?.payment_methods || [];
+      const selectedPaymentMethod = updatedPaymentMethods.includes(paymentMethod)
+        ? paymentMethod
+        : updatedPaymentMethods[0];
+
+      setPaymentMethods(updatedPaymentMethods);
+      setPaymentMethod(selectedPaymentMethod || '');
+
+      if (updatedCart?.needs_shipping && !hasShippingRates(updatedCart)) {
+        throw new Error('No delivery option is available for this address.');
+      }
+      if (!selectedPaymentMethod) {
+        throw new Error('No payment method is available for this order.');
+      }
+
+      const order = await submitCheckout({
+        ...payload,
+        payment_method: selectedPaymentMethod,
+      });
+      const orderId = order?.order_id ?? order?.id;
+      if (!orderId) {
+        throw new Error('Your order was placed, but its confirmation details were unavailable.');
+      }
+
+      const paymentRedirect = order?.payment_result?.redirect_url || order?.redirect;
+      if (paymentRedirect) {
+        window.location.assign(paymentRedirect);
+        return;
+      }
+
+      const orderWithDeposit = depositSimulation ? { ...order, deposit_simulation: depositSimulation } : order;
+      const orderKey = orderWithDeposit?.order_key ? `?key=${encodeURIComponent(orderWithDeposit.order_key)}` : '';
+      try {
+        sessionStorage.setItem(`demo-store-order-${orderId}`, JSON.stringify(orderWithDeposit));
+      } catch {
+        // The confirmation route still receives the order through navigation state.
+      }
+      navigate(`/order-confirmation/${orderId}${orderKey}`, { state: { order: orderWithDeposit } });
+      refreshCart().catch((refreshError) => {
+        console.error('Failed to refresh the cart after checkout', refreshError);
+      });
     } catch (err) {
       setErrors({ submit: err.message || 'Checkout failed. Please try again.' });
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -147,7 +216,7 @@ function Checkout() {
             <section className="checkout-section">
               <h2>BILLING DETAILS</h2>
 
-              <div className="form-row">
+              <div className="checkout-field-row">
                 <Field label="FIRST NAME *" error={errors.billing_first_name}>
                   <input type="text" value={billing.first_name}
                     onChange={(e) => handleBillingChange('first_name', e.target.value)} />
@@ -179,7 +248,7 @@ function Checkout() {
                   onChange={(e) => handleBillingChange('address_2', e.target.value)} />
               </div>
 
-              <div className="form-row">
+              <div className="checkout-field-row">
                 <Field label="CITY *" error={errors.billing_city}>
                   <input type="text" value={billing.city}
                     onChange={(e) => handleBillingChange('city', e.target.value)} />
@@ -190,7 +259,7 @@ function Checkout() {
                 </Field>
               </div>
 
-              <div className="form-row">
+              <div className="checkout-field-row">
                 <Field label="POSTCODE *" error={errors.billing_postcode}>
                   <input type="text" value={billing.postcode}
                     onChange={(e) => handleBillingChange('postcode', e.target.value)} />
@@ -219,7 +288,7 @@ function Checkout() {
 
               {shipToDifferent && (
                 <>
-                  <div className="form-row">
+                  <div className="checkout-field-row">
                     <Field label="FIRST NAME">
                       <input type="text" value={shipping.first_name}
                         onChange={(e) => handleShippingChange('first_name', e.target.value)} />
@@ -233,7 +302,7 @@ function Checkout() {
                     <input type="text" value={shipping.address_1}
                       onChange={(e) => handleShippingChange('address_1', e.target.value)} />
                   </Field>
-                  <div className="form-row">
+                  <div className="checkout-field-row">
                     <Field label="CITY">
                       <input type="text" value={shipping.city}
                         onChange={(e) => handleShippingChange('city', e.target.value)} />
@@ -284,9 +353,7 @@ function Checkout() {
                 <div className="total-line">
                   <span>Shipping</span>
                   <span>
-                    {Number(totals.total_shipping) === 0
-                      ? 'Free'
-                      : formatMinor(totals.total_shipping, totals)}
+                    {shippingLabel(cart, totals)}
                   </span>
                 </div>
                 <div className="total-line grand-total">
@@ -294,6 +361,13 @@ function Checkout() {
                   <span>{formatMinor(totals.total_price, totals)}</span>
                 </div>
               </div>
+
+              {depositSimulation && (
+                <div className="deposit-simulation-note">
+                  <strong>50% deposit simulation</strong>
+                  <p>{formatMinor(depositSimulation.deposit_due_now, totals)} is due by Cash on Delivery. A separate {formatMinor(depositSimulation.balance_due, totals)} balance is recorded for manual collection after shipment. No online payment is taken.</p>
+                </div>
+              )}
 
               <div className="payment-methods">
                 <h3>PAYMENT METHOD</h3>
@@ -309,7 +383,7 @@ function Checkout() {
                       checked={paymentMethod === method}
                       onChange={(e) => setPaymentMethod(e.target.value)}
                     />
-                    <span>{method}</span>
+                    <span>{paymentMethodLabel(method)}</span>
                   </label>
                 ))}
                 {errors.payment_method && (

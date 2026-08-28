@@ -7,8 +7,9 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { getOrder } from '../api/checkout';
+import { getDepositSimulation } from '../utils/depositSimulation';
 import '../styles/OrderConfirmation.css';
 
 function formatAmount(amount, currency) {
@@ -19,10 +20,20 @@ function formatAmount(amount, currency) {
   return `${symbol}${value}`;
 }
 
+function getStoredOrder(orderId) {
+  try {
+    const stored = sessionStorage.getItem(`demo-store-order-${orderId}`);
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+}
+
 function OrderConfirmation() {
   const { orderId } = useParams();
   const [searchParams] = useSearchParams();
   const orderKey = searchParams.get('key');
+  const location = useLocation();
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,6 +42,15 @@ function OrderConfirmation() {
   useEffect(() => {
     if (!orderId) return;
     let cancelled = false;
+    const initialOrder = location.state?.order || getStoredOrder(orderId);
+
+    if (initialOrder) {
+      setOrder(initialOrder);
+      setError(null);
+      setLoading(false);
+      return () => { cancelled = true; };
+    }
+
     setLoading(true);
     getOrder(orderId, orderKey)
       .then((data) => {
@@ -46,7 +66,7 @@ function OrderConfirmation() {
         if (!cancelled) setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [orderId, orderKey]);
+  }, [location.state, orderId, orderKey]);
 
   if (loading) {
     return (
@@ -68,10 +88,12 @@ function OrderConfirmation() {
     );
   }
 
+  const orderTotals = order.totals || order.__experimentalCart?.totals || {};
   const currency = {
-    minor_unit: order.totals?.currency_minor_unit ?? 2,
-    symbol: order.totals?.currency_symbol || '',
+    minor_unit: orderTotals.currency_minor_unit ?? 2,
+    symbol: orderTotals.currency_symbol || '',
   };
+  const depositSimulation = order.deposit_simulation || getDepositSimulation(order.__experimentalCart?.items);
   const billing = order.billing_address || {};
   const shipping = order.shipping_address || billing;
 
@@ -87,6 +109,13 @@ function OrderConfirmation() {
         <div className="confirmation-message">
           <p>Your order has been received. We'll send a confirmation email shortly.</p>
         </div>
+
+        {depositSimulation && (
+          <div className="confirmation-deposit-note">
+            <strong>50% deposit simulation</strong>
+            <p>{formatAmount(depositSimulation.deposit_due_now, currency)} is due by Cash on Delivery. The remaining {formatAmount(depositSimulation.balance_due, currency)} is recorded for manual collection after shipment. No online payment was taken.</p>
+          </div>
+        )}
 
         <div className="order-details-grid">
           <div className="detail-section">
