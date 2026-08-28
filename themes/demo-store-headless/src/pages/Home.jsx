@@ -53,6 +53,9 @@ function Home() {
   return (
     <div className="orbital-home">
       <section className="shoe-showcase" aria-label="Featured footwear">
+        <video className="shoe-hero-video" autoPlay muted loop playsInline preload="metadata" poster="/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg" aria-hidden="true">
+          <source src="/wp-content/themes/demo-store-headless/public/energy/video/neon-light-layer.mp4" type="video/mp4" />
+        </video>
         <div className="shoe-orbit shoe-orbit-one" aria-hidden="true" />
         <div className="shoe-orbit shoe-orbit-two" aria-hidden="true" />
         <div className="shoe-showcase-copy">

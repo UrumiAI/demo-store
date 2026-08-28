@@ -60,7 +60,7 @@ function Footer() {
 
       <div className="footer-bottom">
         <span>© {currentYear} {siteName}. All rights reserved.</span>
-        <span>Built for the next step.</span>
+        <a href="https://freestockfootagearchive.com/neon-light-layer-effect-abstract-night/" target="_blank" rel="noreferrer">Hero loop: Free Stock Footage Archive · CC BY 4.0</a>
       </div>
     </footer>
   );
