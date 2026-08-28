@@ -60,7 +60,7 @@ function Footer() {
 
       <div className="footer-bottom">
         <span>© {currentYear} {siteName}. All rights reserved.</span>
-        <a href="https://www.pexels.com/video/video-of-a-person-walking-6326752/" target="_blank" rel="noreferrer">Shoe motion film: Pexels</a>
+        <a href="https://www.pexels.com/video/people-wearing-sneakers-and-walking-in-slow-motion-2881960/" target="_blank" rel="noreferrer">Shoe motion film: Pexels</a>
       </div>
     </footer>
   );
