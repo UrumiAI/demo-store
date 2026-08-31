@@ -10,26 +10,26 @@
 
 :root {
   /* ---------- Surface ---------- */
-  --color-bg-primary:   #FBF8F3;
-  --color-bg-elevated:  #FFFFFF;
-  --color-bg-subtle:    #F4EFE7;
-  --color-bg-inverse:   #1A1612;
+  --color-bg-primary:   #080812;
+  --color-bg-elevated:  #10101d;
+  --color-bg-subtle:    #151526;
+  --color-bg-inverse:   #f3f1ff;
 
   /* ---------- Text ---------- */
-  --color-text-primary:   #1A1612;
-  --color-text-secondary: #6B635A;
-  --color-text-muted:     #9A9088;
-  --color-text-inverse:   #FBF8F3;
-  --color-text-link:      #1A1612;
+  --color-text-primary:   #f4f2ff;
+  --color-text-secondary: #a5a6c4;
+  --color-text-muted:     #6e7190;
+  --color-text-inverse:   #080812;
+  --color-text-link:      #f4f2ff;
 
   /* ---------- Accent (sage) ---------- */
-  --color-accent:        #5F6F52;
-  --color-accent-hover:  #4C5A41;
-  --color-accent-subtle: #E8EBE2;
+  --color-accent:        #b6ff35;
+  --color-accent-hover:  #d3ff85;
+  --color-accent-subtle: #1f2c11;
 
   /* ---------- Border ---------- */
-  --color-border-subtle: #E8E2D8;
-  --color-border-strong: #1A1612;
+  --color-border-subtle: #282943;
+  --color-border-strong: #a9acff;
 
   /* ---------- Status ---------- */
   --color-sale:    #A65D4F;
@@ -38,12 +38,12 @@
   --color-error:   #8B3A2F;
 
   /* ---------- Type families ---------- */
-  --font-display: 'EB Garamond', Georgia, 'Times New Roman', serif;
-  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Arial Black', 'Arial Narrow', Impact, sans-serif;
+  --font-body:    Inter, ui-sans-serif, system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* ---------- Type scale (sizes / line-heights) ---------- */
-  --type-display-size: 48px;  --type-display-lh: 52px;
+  --type-display-size: 64px;  --type-display-lh: 60px;
   --type-h1-size:      36px;  --type-h1-lh:      42px;
   --type-h2-size:      28px;  --type-h2-lh:      36px;
   --type-h3-size:      22px;  --type-h3-lh:      30px;

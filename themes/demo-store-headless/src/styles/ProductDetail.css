@@ -1,6 +1,7 @@
 .product-detail-page {
   max-width: var(--container-max);
   margin: 0 auto;
+  padding: var(--space-7) var(--container-padding);
 }
 
 .back-link {
@@ -34,7 +35,7 @@
 .main-image-wrapper {
   width: 100%;
   aspect-ratio: 4 / 5;
-  background: var(--color-bg-subtle);
+  background: radial-gradient(circle at 50% 40%, #33366e, #151526 60%);
   overflow: hidden;
 }
 
@@ -153,11 +154,11 @@
 }
 
 .add-to-bag-btn {
-  background: var(--color-text-primary);
+  background: var(--color-accent);
   color: var(--color-text-inverse);
   border: 0;
 }
-.add-to-bag-btn:hover { background: rgba(26,22,18,0.85); }
+.add-to-bag-btn:hover { background: var(--color-accent-hover); }
 .add-to-bag-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .buy-now-btn {

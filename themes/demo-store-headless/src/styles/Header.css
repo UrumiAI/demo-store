@@ -2,7 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--color-bg-primary);
+  background: rgba(223,137,64,.84);
+  backdrop-filter: blur(16px);
   border-bottom: var(--border-width) solid var(--color-border-subtle);
 }
 
@@ -22,11 +23,11 @@
 
 .logo-text {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 28px;
   line-height: 1;
-  font-weight: 400;
-  letter-spacing: var(--track-snug);
-  color: var(--color-text-primary);
+  font-weight: 900;
+  letter-spacing: -.1em;
+  color: #fff9f1;
 }
 
 .site-nav {
@@ -41,13 +42,13 @@
   font-weight: 600;
   letter-spacing: var(--track-wider);
   text-transform: uppercase;
-  color: var(--color-text-primary);
+  color: #fff9f1;
   text-decoration: none;
   transition: color var(--duration-base) var(--ease-standard);
 }
 
 .nav-link:hover {
-  color: var(--color-text-secondary);
+  color: #2c1a10;
 }
 
 .cart-link {

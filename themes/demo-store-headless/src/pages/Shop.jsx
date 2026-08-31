@@ -12,11 +12,11 @@ function Shop() {
   return (
     <>
       <section className="collection-title">
-        <span className="eyebrow">Catalogue</span>
-        <h1>Shop</h1>
+        <span className="eyebrow">ORBITAL / 2026</span>
+        <h1>Footwear systems</h1>
         <div className="title-divider" />
       </section>
-      <ProductList perPage={24} />
+      <ProductList perPage={3} />
     </>
   );
 }

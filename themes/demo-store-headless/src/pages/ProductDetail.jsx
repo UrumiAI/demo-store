@@ -20,6 +20,13 @@ function formatPrice(prices) {
   return `${symbol}${value}`;
 }
 
+const shoeArtwork = {
+  'aero-void': '/wp-content/themes/demo-store-headless/public/shoes/aero-void.jpg',
+  'oxide-high': '/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg',
+  'monorail-02': '/wp-content/themes/demo-store-headless/public/shoes/monorail.jpg',
+  'orbit-footwear-pack': '/wp-content/themes/demo-store-headless/public/shoes/oxide-high.jpg',
+};
+
 function ProductDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -99,8 +106,7 @@ function ProductDetail() {
   }
 
   const images = product.images || [];
-  const currentImage =
-    images[selectedImageIndex]?.src || 'https://via.placeholder.com/800x1000?text=No+Image';
+  const currentImage = shoeArtwork[product.slug] || images[selectedImageIndex]?.src || 'https://via.placeholder.com/800x1000?text=No+Image';
 
   return (
     <div className="product-detail-page">

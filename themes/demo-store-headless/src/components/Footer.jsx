@@ -17,7 +17,7 @@ function PlaceholderLink({ children }) {
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-  const siteName = window.wpData?.siteName || 'Salve';
+  const siteName = 'ORBITAL';
 
   return (
     <footer className="site-footer">
@@ -25,26 +25,16 @@ function Footer() {
         <div className="footer-brand">
           <Link to="/" className="footer-logo">{siteName}</Link>
           <p className="footer-tagline">
-            Considered formulations. Made for the routine, not the ritual.
+            Footwear systems for the way forward.
           </p>
         </div>
 
         <div className="footer-column">
           <h4>Shop</h4>
           <nav>
-            <Link to="/shop">All products</Link>
-            <PlaceholderLink>Skincare</PlaceholderLink>
-            <PlaceholderLink>Body</PlaceholderLink>
-            <PlaceholderLink>Hand &amp; bath</PlaceholderLink>
-          </nav>
-        </div>
-
-        <div className="footer-column">
-          <h4>About</h4>
-          <nav>
-            <PlaceholderLink>Our story</PlaceholderLink>
-            <PlaceholderLink>Journal</PlaceholderLink>
-            <PlaceholderLink>Stockists</PlaceholderLink>
+            <Link to="/shop">All footwear</Link>
+            <PlaceholderLink>New arrivals</PlaceholderLink>
+            <PlaceholderLink>Size guide</PlaceholderLink>
           </nav>
         </div>
 
@@ -60,7 +50,7 @@ function Footer() {
 
       <div className="footer-bottom">
         <span>© {currentYear} {siteName}. All rights reserved.</span>
-        <span>Photography sourced from Pexels.</span>
+        <a href="https://www.pexels.com/video/people-wearing-sneakers-and-walking-in-slow-motion-2881960/" target="_blank" rel="noreferrer">Shoe motion film: Pexels</a>
       </div>
     </footer>
   );

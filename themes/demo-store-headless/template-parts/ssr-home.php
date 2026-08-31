@@ -1,26 +1,40 @@
 <?php
 /**
- * SYNC: This file mirrors its counterpart in the sibling theme repo
- * (UrumiAI/base-headless ↔ UrumiAI/demo-store) at the same relative path.
- * Port improvements both ways. Naming mapping when porting:
- *   demo_store_*     ↔ base_headless_*       (function prefix)
- *   DemoStore_SSR_*  ↔ BaseHeadless_SSR_*    (PHP class prefix)
- *   Demo_Store_      ↔ Base_                 (@package tag)
- */
-
-/**
  * SSR Template — Homepage
  *
  * @package Demo_Store_Headless
  */
 
-$site_name = get_bloginfo('name');
-$tagline   = get_bloginfo('description');
+$theme_uri = get_template_directory_uri();
 ?>
-<div class="ssr-section">
-    <h1><?php echo esc_html($site_name); ?></h1>
-    <?php if (!empty($tagline)): ?>
-    <p><?php echo esc_html($tagline); ?></p>
-    <?php endif; ?>
-    <p><a href="<?php echo esc_url(home_url('/shop')); ?>">Browse the shop →</a></p>
+<div class="orbital-home">
+    <section class="orbital-intro-video" aria-label="ORBITAL motion film">
+        <video autoplay muted loop playsinline preload="metadata" poster="<?php echo esc_url($theme_uri . '/public/shoes/oxide-high.jpg'); ?>" aria-hidden="true"><source src="<?php echo esc_url($theme_uri . '/public/shoes/orbital-motion.mp4'); ?>" type="video/mp4"></video>
+        <p><span>ORBITAL</span><b>01 / MOTION FILM</b></p>
+    </section>
+    <section class="shoe-showcase" aria-label="Featured footwear">
+        <video class="shoe-hero-video" autoplay muted loop playsinline preload="metadata" poster="<?php echo esc_url($theme_uri . '/public/shoes/oxide-high.jpg'); ?>" aria-hidden="true"><source src="<?php echo esc_url($theme_uri . '/public/shoes/orbital-motion.mp4'); ?>" type="video/mp4"></video>
+        <div class="shoe-orbit shoe-orbit-one" aria-hidden="true"></div>
+        <div class="shoe-orbit shoe-orbit-two" aria-hidden="true"></div>
+        <div class="shoe-showcase-copy">
+            <p class="shoe-kicker">ORBITAL / FOOTWEAR SYSTEMS</p>
+            <h1>Move<br>like the<br><em>future.</em></h1>
+            <p>A low-gravity runner for city miles, late nights, and every fast exit.</p>
+            <p><a class="shoe-shop-link" href="<?php echo esc_url(home_url('/shop')); ?>">Explore collection <span>↗</span></a></p>
+        </div>
+        <div class="shoe-stage">
+            <div class="shoe-stage-glow" aria-hidden="true"></div>
+            <img class="shoe-render" src="<?php echo esc_url($theme_uri . '/public/shoes/aero-void.jpg'); ?>" alt="Aero Void sneaker">
+            <div class="shoe-stage-meta"><span>01</span><span>/ 03</span></div>
+        </div>
+        <aside class="shoe-buybox">
+            <p>Runner / 001</p>
+            <h2>Aero Void</h2>
+            <div class="shoe-price"><strong>$180</strong><del>$210</del></div>
+            <div class="shoe-colour"><span>Color</span><b>Ivory mesh / bone</b></div>
+            <div class="shoe-sizes"><span>EU</span><i>38</i><i>40</i><i>42</i><i>44</i></div>
+            <a class="shoe-detail-link" href="<?php echo esc_url(home_url('/product/aero-void')); ?>">View shoe <span>↗</span></a>
+        </aside>
+        <p class="shoe-manifesto">Confidence, engineered for motion.</p>
+    </section>
 </div>
