@@ -117,7 +117,7 @@ Two faces, no exceptions:
 | Token                    | Family                         | Source        | Notes                                |
 |--------------------------|--------------------------------|---------------|--------------------------------------|
 | `--font-display`         | EB Garamond                    | Google Fonts  | Classical serif, free, broad weights |
-| `--font-body`            | Inter                          | Google Fonts  | Humanist sans, neutral, free         |
+| `--font-body`            | Inter                          | Google Fonts  | Neutral sans-serif, free             |
 | `--font-mono`            | JetBrains Mono *(optional)*    | Google Fonts  | SKU, lot numbers, batch labels only  |
 
 Fallback stacks:
