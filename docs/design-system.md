@@ -1,8 +1,8 @@
 # Demo Store — Design System
 
 Living reference for the cosmetic storefront built on `demo-store-headless`.
-Tokens here map 1:1 to CSS custom properties in `src/styles/tokens.css`
-(forthcoming). When a value changes, change it in both places.
+The implementation tokens live in `src/styles/tokens.css`. When a value
+changes, update this reference and the implementation together.
 
 > **Scope:** specific to this demo storefront. Do **not** port any of these
 > visual tokens into `base-headless` — that repo intentionally ships with
