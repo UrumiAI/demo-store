@@ -1,0 +1,301 @@
+{
+    "$schema": "https://modelcontextprotocol.io/schema/tools",
+    "_comment": "GENERATED from Urumiai_Store_For_Ai_Tools::public_definitions(). Do not hand-edit \u2014 store-for-ai.test.js pins this file against the implementation, so drift fails the suite. Regenerate with: php tests/php/generate-schema.php",
+    "serverName": "urumiai-store-for-ai",
+    "tools": [
+        {
+            "name": "create_session",
+            "title": "Create shopping session",
+            "description": "Open a shopping session for one shopper and return its session_id, plus the store profile. Every other cart tool takes this session_id. Call this first.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "idempotency_key": {
+                        "type": "string",
+                        "description": "Repeat-safe key; a retry with the same key returns the first result instead of applying twice."
+                    }
+                },
+                "required": []
+            }
+        },
+        {
+            "name": "get_session",
+            "title": "Get session",
+            "description": "Read a session: its state, when it expires, and the cart behind it.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id from create_session."
+                    }
+                },
+                "required": [
+                    "session_id"
+                ]
+            }
+        },
+        {
+            "name": "end_session",
+            "title": "End session",
+            "description": "Close a session and discard its cart. Safe to call twice.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id from create_session."
+                    }
+                },
+                "required": [
+                    "session_id"
+                ]
+            }
+        },
+        {
+            "name": "search_products",
+            "title": "Search products",
+            "description": "Search the merchant catalog. Returns only published, purchasable products. Prices are integers in the currency minor unit.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Free-text search over name and description."
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "Category slug."
+                    },
+                    "min_price_minor": {
+                        "type": "integer",
+                        "description": "Minimum price, minor units."
+                    },
+                    "max_price_minor": {
+                        "type": "integer",
+                        "description": "Maximum price, minor units."
+                    },
+                    "in_stock_only": {
+                        "type": "boolean",
+                        "description": "Exclude out-of-stock products."
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Page size (default 20)."
+                    },
+                    "cursor": {
+                        "type": "string",
+                        "description": "Opaque cursor from a previous call."
+                    }
+                },
+                "required": []
+            }
+        },
+        {
+            "name": "get_product",
+            "title": "Get product",
+            "description": "Fetch one product by numeric id or slug, including variations and stock.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "product": {
+                        "type": "string",
+                        "description": "Numeric product id or slug."
+                    }
+                },
+                "required": [
+                    "product"
+                ]
+            }
+        },
+        {
+            "name": "list_categories",
+            "title": "List categories",
+            "description": "List public product categories with product counts.",
+            "inputSchema": {
+                "type": "object",
+                "properties": [],
+                "required": []
+            }
+        },
+        {
+            "name": "get_cart",
+            "title": "Get cart",
+            "description": "Read the current contents of a session cart.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id from create_session."
+                    }
+                },
+                "required": [
+                    "session_id"
+                ]
+            }
+        },
+        {
+            "name": "add_to_cart",
+            "title": "Add to cart",
+            "description": "Add a product to the session cart. Does not purchase anything.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id from create_session."
+                    },
+                    "product_id": {
+                        "type": "integer",
+                        "description": "Numeric product id."
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "description": "Quantity to add (default 1)."
+                    },
+                    "variation_id": {
+                        "type": "integer",
+                        "description": "Variation id, required for variable products."
+                    },
+                    "idempotency_key": {
+                        "type": "string",
+                        "description": "Repeat-safe key; a retry with the same key returns the first result instead of applying twice."
+                    },
+                    "dry_run": {
+                        "type": "boolean",
+                        "description": "Validate only; change nothing."
+                    }
+                },
+                "required": [
+                    "session_id",
+                    "product_id"
+                ]
+            }
+        },
+        {
+            "name": "update_cart_item",
+            "title": "Update cart item",
+            "description": "Set the quantity of an existing cart line.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id from create_session."
+                    },
+                    "item_key": {
+                        "type": "string",
+                        "description": "Line key from the cart."
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "description": "New quantity (1 or more)."
+                    },
+                    "idempotency_key": {
+                        "type": "string",
+                        "description": "Repeat-safe key; a retry with the same key returns the first result instead of applying twice."
+                    },
+                    "dry_run": {
+                        "type": "boolean",
+                        "description": "Validate only; change nothing."
+                    }
+                },
+                "required": [
+                    "session_id",
+                    "item_key",
+                    "quantity"
+                ]
+            }
+        },
+        {
+            "name": "remove_cart_item",
+            "title": "Remove cart item",
+            "description": "Remove a line from the session cart entirely.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id from create_session."
+                    },
+                    "item_key": {
+                        "type": "string",
+                        "description": "Line key from the cart."
+                    },
+                    "idempotency_key": {
+                        "type": "string",
+                        "description": "Repeat-safe key; a retry with the same key returns the first result instead of applying twice."
+                    },
+                    "dry_run": {
+                        "type": "boolean",
+                        "description": "Validate only; change nothing."
+                    }
+                },
+                "required": [
+                    "session_id",
+                    "item_key"
+                ]
+            }
+        },
+        {
+            "name": "clear_cart",
+            "title": "Clear cart",
+            "description": "Remove every line from the session cart, leaving the session open.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id from create_session."
+                    },
+                    "idempotency_key": {
+                        "type": "string",
+                        "description": "Repeat-safe key; a retry with the same key returns the first result instead of applying twice."
+                    },
+                    "dry_run": {
+                        "type": "boolean",
+                        "description": "Validate only; change nothing."
+                    }
+                },
+                "required": [
+                    "session_id"
+                ]
+            }
+        },
+        {
+            "name": "create_checkout_handoff",
+            "title": "Create checkout handoff",
+            "description": "Mint a single-use checkout URL for a HUMAN to open. It loads the cart you built into that person browser and leaves them on checkout to pay. It places no order, takes no payment and reserves no stock. Once the person opens it, the cart is frozen to you.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id from create_session."
+                    }
+                },
+                "required": [
+                    "session_id"
+                ]
+            }
+        },
+        {
+            "name": "get_handoff_status",
+            "title": "Get handoff status",
+            "description": "Report whether a checkout link has been opened yet, or has expired. Returns no order, customer or payment information.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "handoff_token": {
+                        "type": "string",
+                        "description": "Token returned by create_checkout_handoff."
+                    }
+                },
+                "required": [
+                    "handoff_token"
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/",
+  "preferredVersions": { "php": "8.3", "wp": "latest" },
+  "steps": [
+    { "step": "wp-cli", "command": "wp plugin activate woocommerce" },
+    { "step": "wp-cli", "command": "wp plugin activate urumiai-store-for-ai" },
+    { "step": "wp-cli", "command": "wp plugin activate zz-test-seed" },
+    { "step": "wp-cli", "command": "wp option update woocommerce_currency USD" },
+    { "step": "wp-cli", "command": "wp option update woocommerce_calc_taxes no" },
+    { "step": "wp-cli", "command": "wp option update urumiai_store_for_ai_token test-secret-token" }
+  ]
+}

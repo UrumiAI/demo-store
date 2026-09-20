@@ -1,0 +1,13 @@
+{
+  "name": "urumiai-store-for-ai-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Test harness for the urumiai-store-for-ai plugin. Lives outside the plugin directory because a mu-plugin deploy tars that whole directory into every tenant docroot.",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
